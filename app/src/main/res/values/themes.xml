@@ -5,5 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.MemoryPlus" parent="Base.Theme.MemoryPlus" />
+    <style name="Theme.MemoryPlus" parent="Base.Theme.MemoryPlus">
+        <!-- Set background colour -->
+        <item name="android:windowBackground">@android:color/black</item>
+        <!-- Set text colour -->
+        <item name="textFillColor">@android:color/white</item>
+    </style>
 </resources>
