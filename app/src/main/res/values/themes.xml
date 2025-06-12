@@ -1,3 +1,6 @@
+<!--TODO: remove notification bar, or add option to remove it-->
+<!--<item name="android:windowFullscreen">true</item>-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.MemoryPlus" parent="Theme.Material3.DayNight.NoActionBar">
