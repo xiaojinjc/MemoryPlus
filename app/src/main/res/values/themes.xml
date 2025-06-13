@@ -1,4 +1,4 @@
-<!--TODO: remove notification bar, or add option to remove it-->
+<!-- TODO: remove notification bar, or add option to remove it -->
 <!--<item name="android:windowFullscreen">true</item>-->
 
 <resources xmlns:tools="http://schemas.android.com/tools">

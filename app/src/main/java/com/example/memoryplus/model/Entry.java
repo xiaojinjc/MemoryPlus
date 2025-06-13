@@ -1,3 +1,5 @@
+// TODO: Modify entry so it is {date, [{event}, {event}]}, and then grouped by yaer
+
 package com.example.memoryplus.model;
 
 public class Entry {
