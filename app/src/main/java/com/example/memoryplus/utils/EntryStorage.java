@@ -1,6 +1,7 @@
 package com.example.memoryplus.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.memoryplus.model.Entry;
 import com.google.gson.Gson;
@@ -24,11 +25,15 @@ public class EntryStorage {
     // Load entries from a given filename
     public static List<Entry> loadEntries(Context context, String filename) {
         if (!FileManager.fileExists(context, filename)) {
+            Log.d("EntryStorage", "File not found: " + filename);
             return new ArrayList<>();  // Return empty list if file not found
         }
         String json = FileManager.readFromFile(context, filename);
+        Log.d("EntryStorage", "File not found: " + filename);
         try {
-            return gson.fromJson(json, entryListType);
+            List<Entry> entries = gson.fromJson(json, entryListType);
+            Log.d("EntryStorage", "Parsed " + entries.size() + " entries.");
+            return entries;
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
