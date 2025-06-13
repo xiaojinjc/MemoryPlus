@@ -27,6 +27,6 @@ public class Entry {
     public void setCategory(String category) { this.category = category; }
     public void setType(String type) { this.type = type; }
     public void setDescription(String description) { this.description = description; }
-    public void setNotes(String notes) { this.description = notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
 }
