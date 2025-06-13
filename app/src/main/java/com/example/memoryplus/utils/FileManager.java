@@ -47,15 +47,15 @@ public class FileManager {
     }
 }
 
-// String filename = "2025.json";
+//     String filename = "2025.json";
 //
-//// Save
-//boolean success = FileManager.saveToFile(this, filename, jsonString);
+//     // Save
+//     boolean success = FileManager.saveToFile(this, filename, jsonString);
 //
-//// Load
-//String jsonString = FileManager.readFromFile(this, filename);
+//     // Load
+//     String jsonString = FileManager.readFromFile(this, filename);
 //
-//// Check existence
-//if (FileManager.fileExists(this, filename)) {
-//    // Load or update
-//}
+//     // Check existence
+//     if (FileManager.fileExists(this, filename)) {
+//        // Load or update
+//     }
