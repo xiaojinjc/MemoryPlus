@@ -1,7 +1,8 @@
-<!-- TODO: add notes as arrow button, initially hidden
-    TODO: hide category -->
-
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- TODO: add notes as arrow button, initially hidden-->
+<!--    TODO: hide category -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="8dp"
