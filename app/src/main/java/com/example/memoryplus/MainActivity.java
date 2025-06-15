@@ -26,16 +26,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Entry> sampleEntries = new ArrayList<>();
-        sampleEntries.add(new Entry("2025-06-14", "Media", "Film", "Example Movie", "Nice"));
-        sampleEntries.add(new Entry("2025-06-15", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-16", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-17", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-12", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
-        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
-        EntryStorage.saveEntries(this, "2025.json", sampleEntries);
+//        List<Entry> sampleEntries = new ArrayList<>();
+//        sampleEntries.add(new Entry("2025-06-14", "Media", "Film", "Example Movie", "Nice"));
+//        sampleEntries.add(new Entry("2025-06-15", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-16", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-17", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-12", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
+//        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
+//        EntryStorage.saveEntries(this, "2025.json", sampleEntries);
 
 
         // Load entries
