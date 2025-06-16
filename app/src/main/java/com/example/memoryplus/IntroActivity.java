@@ -15,6 +15,7 @@ public class IntroActivity extends AppCompatActivity {
 
         View rootLayout = findViewById(R.id.introRoot);
 
+//        fix animation
         rootLayout.setOnClickListener(v ->{
             Intent intent = new Intent(IntroActivity.this, MainActivity.class);
             startActivity(intent);
