@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memoryplus.adapters.EntryAdapter;
+//import com.example.memoryplus.adapters.EntryAdapter;
 //import com.example.memoryplus.model.Entry;
 import com.example.memoryplus.utils.EntryStorage;
 import com.example.memoryplus.utils.FilenameUtils;
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 //    private List<Entry> entries;
     private RecyclerView recyclerView;
-    private EntryAdapter adapter;
+//    private EntryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

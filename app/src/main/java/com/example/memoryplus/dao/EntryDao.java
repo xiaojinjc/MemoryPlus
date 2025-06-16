@@ -36,5 +36,5 @@ public interface EntryDao {
     List<EntryDB> getByTypeId(Integer typeId);
 
     @Query("SELECT * FROM entries WHERE date = :date")
-    List<EntryDB> getByDate(Date date);
+    List<EntryDB> getByDate(long date);
 }
