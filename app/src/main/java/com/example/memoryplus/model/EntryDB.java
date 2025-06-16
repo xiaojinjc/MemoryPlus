@@ -1,10 +1,23 @@
 package com.example.memoryplus.model;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
-@Entity(tableName = "entries")
+@Entity(tableName = "entries",
+        foreignKeys = {
+                @ForeignKey(entity = Category.class,
+                        parentColumns = "id",
+                        childColumns = "categoryId",
+                        onDelete = ForeignKey.SET_NULL),
+                @ForeignKey(entity = Type.class,
+                        parentColumns = "id",
+                        childColumns = "typeId",
+                        onDelete = ForeignKey.SET_NULL)
+        },
+        indices = {@Index("categoryId"), @Index("typeId")})
 public class EntryDB {
 
     @PrimaryKey(autoGenerate = true)
@@ -14,9 +27,9 @@ public class EntryDB {
     public String date;
 
     @NonNull
-    public String category;
+    public int categoryId;
 
-    public String type;
+    public  int typeId;
 
     @NonNull
     public String description;
@@ -27,10 +40,10 @@ public class EntryDB {
     public String notes;
 
     // Constructor
-    public EntryDB(@NonNull String date, @NonNull String category, String type, @NonNull String description, int partNumber, boolean isComplete, String notes) {
+    public EntryDB(@NonNull String date, @NonNull int categoryId, int typeId, @NonNull String description, int partNumber, boolean isComplete, String notes) {
         this.date = date;
-        this.category = category;
-        this.type = type;
+        this.categoryId = categoryId;
+        this.typeId = typeId;
         this.description = description;
         this.partNumber = partNumber;
         this.isComplete = isComplete;

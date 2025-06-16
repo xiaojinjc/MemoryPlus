@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.adapters.EntryAdapter;
-import com.example.memoryplus.model.Entry;
+//import com.example.memoryplus.model.Entry;
 import com.example.memoryplus.utils.EntryStorage;
 import com.example.memoryplus.utils.FilenameUtils;
 
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Entry> entries;
+//    private List<Entry> entries;
     private RecyclerView recyclerView;
     private EntryAdapter adapter;
 
@@ -36,18 +36,18 @@ public class MainActivity extends AppCompatActivity {
 //        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
 //        sampleEntries.add(new Entry("2025-06-18", "Game", "GI", "In the long lens Event 1", ""));
 //        EntryStorage.saveEntries(this, "2025.json", sampleEntries);
-
-
-        // Load entries
-        String filename = FilenameUtils.getFilenameForYear(2025);
-        entries = EntryStorage.loadEntries(this, filename);
-        Log.d("MainActivity", "Loaded entries: " + entries.size());
-
-        // Setting up recyclerView
-        recyclerView = findViewById(R.id.entryRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new EntryAdapter(entries);
-        recyclerView.setAdapter(adapter);
+//
+//
+////         Load entries
+//        String filename = FilenameUtils.getFilenameForYear(2025);
+//        entries = EntryStorage.loadEntries(this, filename);
+//        Log.d("MainActivity", "Loaded entries: " + entries.size());
+//
+////         Setting up recyclerView
+//        recyclerView = findViewById(R.id.entryRecyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        adapter = new EntryAdapter(entries);
+//        recyclerView.setAdapter(adapter);
     }
 }

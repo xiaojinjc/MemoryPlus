@@ -9,10 +9,10 @@ import androidx.room.PrimaryKey;
 @Entity(
         tableName = "suggestions",
         foreignKeys = @ForeignKey(
-                entity = Subcategory.class, // or rename this class to Type
+                entity = Type.class, // or rename this class to Type
                 parentColumns = "id",
                 childColumns = "typeId",
-                onDelete = ForeignKey.CASCADE
+                onDelete = ForeignKey.SET_NULL
         ),
         indices = {@Index("typeId")}
 )
