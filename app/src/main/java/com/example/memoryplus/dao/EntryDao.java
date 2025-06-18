@@ -1,5 +1,6 @@
 package com.example.memoryplus.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -24,7 +25,7 @@ public interface EntryDao {
     void delete(EntryDB entry);
 
     @Query("SELECT * FROM entries ORDER BY date DESC")
-    List<EntryDB> getAll();
+    LiveData<List<EntryDB>> getAllLive();
 
     @Query("SELECT * FROM entries WHERE id = :id")
     EntryDB getById(int id);

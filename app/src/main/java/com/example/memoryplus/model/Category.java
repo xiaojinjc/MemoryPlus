@@ -12,4 +12,8 @@ public class Category {
 
     @NonNull
     public String name; // e.g., Media, Outside, Games, Food
+
+    public Category(@NonNull String name){
+        this.name = name;
+    }
 }

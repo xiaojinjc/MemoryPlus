@@ -24,5 +24,9 @@ public class Type {
 
     @NonNull
     public String name; // e.g., Movie, Anime, GI
+
+    public Type(@NonNull String name){
+        this.name = name;
+    }
 }
 

@@ -1,6 +1,9 @@
 package com.example.memoryplus.repository;
 
 import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.EntryDao;
 import com.example.memoryplus.model.EntryDB;
@@ -27,9 +30,10 @@ public class EntryRepository {
         new Thread(() -> entryDao.delete(entry)).start();
     }
 
-    public List<EntryDB> getAll() {
-        return entryDao.getAll();
+    public LiveData<List<EntryDB>> getAllLive() {
+        return entryDao.getAllLive();
     }
+
 
     public EntryDB getById(int id) {
         return entryDao.getById(id);
