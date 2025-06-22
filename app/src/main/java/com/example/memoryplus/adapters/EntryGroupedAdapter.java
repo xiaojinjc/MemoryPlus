@@ -16,23 +16,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+//    Hold the items of both header or entry type
     private List<ListItem> items = new ArrayList<>();
 
+//    Called from outside to set new data in the list, and call warns the rv that data changed and need to be redrawn
     public void setItems(List<ListItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
     }
 
+//    Tells the adapter which type of view (header or entry) is needed at that position
     @Override
     public int getItemViewType(int position) {
         return items.get(position).getType();
     }
 
+//    Gets the count of the list of items
     @Override
     public int getItemCount() {
         return items.size();
     }
 
+//    Creates the layout for the correct type of view
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ListItem.TYPE_HEADER) {
@@ -46,24 +51,8 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ListItem item = items.get(position);
-        if (holder instanceof HeaderViewHolder) {
-            HeaderItem header = (HeaderItem) item;
-            ((HeaderViewHolder) holder).dateText.setText("「" + header.date + "」");
-            ((HeaderViewHolder) holder).pinIcon.setVisibility(header.food ? View.VISIBLE : View.GONE);
-            ((HeaderViewHolder) holder).checkIcon.setVisibility(header.gym ? View.VISIBLE : View.GONE);
-        } else {
-            EntryItem entry = (EntryItem) item;
-            String line = entry.type + " " + entry.description;
-            if (entry.part != null && !entry.part.isEmpty()) {
-                line += " " + entry.part;
-            }
-            ((EntryViewHolder) holder).entryText.setText(line);
-        }
-    }
-
+//    View holders: Classes that holds all the views in one for easier writing
+//    so that you don't have to write findViewById all the time
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView dateText;
         ImageView pinIcon, checkIcon;
@@ -84,4 +73,26 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             entryText = itemView.findViewById(R.id.text_entry_line);
         }
     }
+
+
+//    Important: Fills the data, checks type of view holders and sets the data in the respective places
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        ListItem item = items.get(position);
+        if (holder instanceof HeaderViewHolder) {
+            HeaderItem header = (HeaderItem) item;
+            String tempDate = "「" + header.date + "」";                 // small error if not using this and just passing
+            ((HeaderViewHolder) holder).dateText.setText(tempDate);     // here
+            ((HeaderViewHolder) holder).pinIcon.setVisibility(header.food ? View.VISIBLE : View.GONE);
+            ((HeaderViewHolder) holder).checkIcon.setVisibility(header.gym ? View.VISIBLE : View.GONE);
+        } else {
+            EntryItem entry = (EntryItem) item;
+            String line = entry.type + " " + entry.description;
+            if (entry.part != null && !entry.part.isEmpty()) {
+                line += " " + entry.part;
+            }
+            ((EntryViewHolder) holder).entryText.setText(line);
+        }
+    }
+
 }
