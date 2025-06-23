@@ -1,5 +1,6 @@
 package com.example.memoryplus.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import java.util.List;
 public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 //    Hold the items of both header or entry type
     private List<ListItem> items = new ArrayList<>();
+    private EntryClickListener entryClickListener;
 
 //    Called from outside to set new data in the list, and call warns the rv that data changed and need to be redrawn
+//    TODO: fix this notifyDataSetChanged
     public void setItems(List<ListItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
@@ -31,7 +34,7 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return items.get(position).getType();
     }
 
-//    Gets the count of the list of items
+//    Gets the count of the list of items, tell rv how many rows to display
     @Override
     public int getItemCount() {
         return items.size();
@@ -65,12 +68,19 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-    static class EntryViewHolder extends RecyclerView.ViewHolder {
+//    TODO: Finish adding click listener
+    static class EntryViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
         TextView entryText;
 
         EntryViewHolder(View itemView) {
             super(itemView);
             entryText = itemView.findViewById(R.id.text_entry_line);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view){
+
         }
     }
 
@@ -93,6 +103,16 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             ((EntryViewHolder) holder).entryText.setText(line);
         }
+    }
+
+//    Interface to handle clicks, delegating responsibility to parent
+    public interface EntryClickListener {
+        void onItemClick(View view, int position);
+    }
+
+//    Allows for callbacks(passing functions) from activity
+    void setEntryClickListener(EntryClickListener entryClickListener){
+        this.entryClickListener = entryClickListener;
     }
 
 }
