@@ -1,10 +1,17 @@
 package com.example.memoryplus.repository;
 
 import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.CategoryDao;
-import com.example.memoryplus.model.Category;
+import com.example.memoryplus.entity.Category;
+import com.example.memoryplus.entity.EntryDB;
+
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CategoryRepository {
     private final CategoryDao categoryDao;
@@ -14,9 +21,15 @@ public class CategoryRepository {
         categoryDao = db.categoryDao();
     }
 
-    public void insert(Category category) {
-        new Thread(() -> categoryDao.insert(category)).start();
-    }
+//    public void insert(Category category) {
+//        new Thread(() -> categoryDao.insert(category)).start();
+//    }
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        public void insert(Category category) {
+            executor.execute(() -> categoryDao.insert(category));
+        }
+
 
     public void update(Category category) {
         new Thread(() -> categoryDao.update(category)).start();
@@ -26,11 +39,12 @@ public class CategoryRepository {
         new Thread(() -> categoryDao.delete(category)).start();
     }
 
-    public List<Category> getAll() {
+    public LiveData<List<Category>> getAll() {
         return categoryDao.getAll();
     }
 
     public Category getById(int id) {
         return categoryDao.getById(id);
     }
+
 }
