@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.memoryplus.R;
-import com.example.memoryplus.model.EntryItem;
-import com.example.memoryplus.model.HeaderItem;
-import com.example.memoryplus.model.ListItem;
+import com.example.memoryplus.item.EntryItem;
+import com.example.memoryplus.item.HeaderItem;
+import com.example.memoryplus.item.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 //    Called from outside to set new data in the list, and call warns the rv that data changed and need to be redrawn
 //    TODO: fix this notifyDataSetChanged
+//    This is expensive last resort, change can either be data or structure, this assumes both so it build everything again
     public void setItems(List<ListItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
@@ -68,7 +69,7 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
-//    TODO: Finish adding click listener
+//    TODO: Finish adding click functionality
     static class EntryViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
         TextView entryText;
 
@@ -80,7 +81,7 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @Override
         public void onClick(View view){
-
+            Log.d("ENTRY ADAPTER", "click " + getAdapterPosition());
         }
     }
 
