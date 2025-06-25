@@ -12,8 +12,12 @@ import com.example.memoryplus.utils.EntryStorage;
 import com.example.memoryplus.utils.FilenameUtils;
 import com.example.memoryplus.viewmodel.EntryViewModel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 //    private EntryAdapter adapter;
     private  EntryViewModel entryViewModel;
     private EntryGroupedAdapter adapter;
+
+    private ImageButton button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,5 +47,14 @@ public class MainActivity extends AppCompatActivity {
         entryViewModel.getGroupedItems().observe(this, groupedItems -> {
             adapter.setItems(groupedItems);
         });
+
+        button = findViewById(R.id.button3);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, CategoryActivity.class));
+            }
+        });
+
     }
 }
