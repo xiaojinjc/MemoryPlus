@@ -1,5 +1,6 @@
 package com.example.memoryplus.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -7,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.memoryplus.model.Category;
+import com.example.memoryplus.entity.Category;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public interface CategoryDao {
     void delete(Category category);
 
     @Query("SELECT * FROM categories ORDER BY name ASC")
-    List<Category> getAll();
+    LiveData<List<Category>> getAll();
 
     @Query("SELECT * FROM categories WHERE id = :id LIMIT 1")
     Category getById(int id);
