@@ -25,7 +25,8 @@ public class Type {
     @NonNull
     public String name; // e.g., Movie, Anime, GI
 
-    public Type(@NonNull String name){
+    public Type(int categoryId,@NonNull String name){
+        this.categoryId = categoryId;
         this.name = name;
     }
 }

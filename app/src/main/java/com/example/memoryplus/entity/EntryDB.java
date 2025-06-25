@@ -27,9 +27,9 @@ public class EntryDB {
     public String date;
 
     @NonNull
-    public int categoryId;
+    public Integer categoryId;
 
-    public  int typeId;
+    public  Integer typeId;
 
     @NonNull
     public String description;
@@ -50,3 +50,5 @@ public class EntryDB {
         this.notes = notes;
     }
 }
+
+

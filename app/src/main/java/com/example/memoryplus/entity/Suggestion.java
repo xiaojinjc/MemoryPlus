@@ -21,7 +21,7 @@ public class Suggestion {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int typeId; // Foreign key to Type (Subcategory) table
+    public Integer typeId; // Foreign key to Type (Subcategory) table
 
     @NonNull
     public String suggestion;   // e.g., "Operation Downpour", "Movie Night"
