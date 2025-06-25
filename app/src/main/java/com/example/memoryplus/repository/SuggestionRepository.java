@@ -3,7 +3,7 @@ package com.example.memoryplus.repository;
 import android.content.Context;
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.SuggestionDao;
-import com.example.memoryplus.model.Suggestion;
+import com.example.memoryplus.entity.Suggestion;
 import java.util.List;
 
 public class SuggestionRepository {

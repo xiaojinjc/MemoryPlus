@@ -8,13 +8,13 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.memoryplus.model.EntryDB;
+import com.example.memoryplus.entity.EntryDB;
 
-import java.util.Date;
 import java.util.List;
 
 @Dao
 public interface EntryDao {
+//    @upsert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(EntryDB entry);
 
@@ -36,6 +36,7 @@ public interface EntryDao {
     @Query("SELECT * FROM entries WHERE typeId = :typeId")
     List<EntryDB> getByTypeId(Integer typeId);
 
+//    Date: long or String
     @Query("SELECT * FROM entries WHERE date = :date")
-    List<EntryDB> getByDate(long date);
+    List<EntryDB> getByDate(String date);
 }

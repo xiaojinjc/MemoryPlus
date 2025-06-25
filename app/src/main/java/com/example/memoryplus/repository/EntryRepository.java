@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.EntryDao;
-import com.example.memoryplus.model.EntryDB;
-import java.util.Date;
+import com.example.memoryplus.entity.EntryDB;
+
 import java.util.List;
 
 public class EntryRepository {
@@ -47,7 +47,8 @@ public class EntryRepository {
         return entryDao.getByTypeId(typeId);
     }
 
-    public List<EntryDB> getByDate(long dateMillis) {
+//    Date: long or String??
+    public List<EntryDB> getByDate(String dateMillis) {
         return entryDao.getByDate(dateMillis);
     }
 }

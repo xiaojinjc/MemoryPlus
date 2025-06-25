@@ -3,7 +3,7 @@ package com.example.memoryplus.repository;
 import android.content.Context;
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.TypeDao;
-import com.example.memoryplus.model.Type;
+import com.example.memoryplus.entity.Type;
 import java.util.List;
 
 public class TypeRepository {

@@ -7,10 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.example.memoryplus.model.EntryDB;
-import com.example.memoryplus.model.EntryItem;
-import com.example.memoryplus.model.HeaderItem;
-import com.example.memoryplus.model.ListItem;
+import com.example.memoryplus.entity.EntryDB;
+import com.example.memoryplus.item.EntryItem;
+import com.example.memoryplus.item.HeaderItem;
+import com.example.memoryplus.item.ListItem;
 import com.example.memoryplus.repository.EntryRepository;
 
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class EntryViewModel extends AndroidViewModel {
 
             String part = entry.partNumber > 0 ? entry.partNumber + "/" : "";
 
-            grouped.add(new EntryItem(typeName, entry.description, part));
+            grouped.add(new EntryItem(typeName, entry.description, part, entry.notes));
         }
         return grouped;
     }

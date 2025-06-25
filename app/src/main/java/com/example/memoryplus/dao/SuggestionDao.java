@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.memoryplus.model.Suggestion;
+import com.example.memoryplus.entity.Suggestion;
 
 import java.util.List;
 
