@@ -46,14 +46,6 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        Button delCategory = findViewById(R.id.delCategory);
-        delCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.deleteCategory(new Category("Outside"));
-            }
-        });
-
     }
 
 

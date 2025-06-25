@@ -3,6 +3,7 @@ package com.example.memoryplus.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,10 +42,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView text;
+        ImageButton deleteButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.categoryText);
+            deleteButton = itemView.findViewById(R.id.deleteCat);
         }
     }
 }
