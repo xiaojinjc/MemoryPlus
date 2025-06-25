@@ -1,4 +1,4 @@
-package com.example.memoryplus.model;
+package com.example.memoryplus.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

@@ -1,10 +1,12 @@
-package com.example.memoryplus.model;
+package com.example.memoryplus.entity;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
+
+// TODO: Optional, change column names
 
 @Entity(tableName = "entries",
         foreignKeys = {
@@ -27,9 +29,9 @@ public class EntryDB {
     public String date;
 
     @NonNull
-    public Integer categoryId;
+    public int categoryId;
 
-    public  Integer typeId;
+    public  int typeId;
 
     @NonNull
     public String description;
