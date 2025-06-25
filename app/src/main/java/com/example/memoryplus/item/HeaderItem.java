@@ -1,4 +1,4 @@
-package com.example.memoryplus.model;
+package com.example.memoryplus.item;
 
 public class HeaderItem implements ListItem {
     public String date;

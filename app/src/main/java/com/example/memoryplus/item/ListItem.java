@@ -1,4 +1,4 @@
-package com.example.memoryplus.model;
+package com.example.memoryplus.item;
 
 public interface ListItem {
     int TYPE_HEADER = 0;

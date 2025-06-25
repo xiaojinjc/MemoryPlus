@@ -1,4 +1,4 @@
-package com.example.memoryplus.model;
+package com.example.memoryplus.item;
 
 public class EntryItem implements ListItem {
     public String type;
