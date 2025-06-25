@@ -25,15 +25,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/categoryDisplay" />
 
-    <Button
-        android:id="@+id/delCategory"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:text="del Category"
-        android:textColor="@color/white"
-
-        android:layout_marginStart="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addCategory" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
