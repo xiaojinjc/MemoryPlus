@@ -12,7 +12,6 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
 
-
         View rootLayout = findViewById(R.id.introRoot);
 
 //        fix animation
