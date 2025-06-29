@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.memoryplus.adapters.CategoryAdapter;
 import com.example.memoryplus.dao.CategoryDao;
@@ -27,7 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         CategoryViewModel viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
-        RecyclerView recyclerView = findViewById(R.id.categoryDisplay);
+        RecyclerView recyclerView = findViewById(R.id.categoryList);
         CategoryAdapter adapter = new CategoryAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -38,10 +40,22 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
         Button addCategory = findViewById(R.id.addCategory);
+        EditText categoryInput = findViewById(R.id.categoryInput);
+
+//        TODO: add validation for duplicates and char length
         addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.insertCategory(new Category("Outside"));
+                String catName = categoryInput.getText().toString().trim();
+
+                if (!catName.isEmpty()){
+                    Category temp = new Category(catName);
+                    viewModel.insertCategory(temp);
+                    categoryInput.setText("");
+                }
+                else {
+                    Toast.makeText(CategoryActivity.this, "Can't make empty category", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
