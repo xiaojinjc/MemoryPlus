@@ -1,9 +1,9 @@
-package com.example.memoryplus.repository;
+package com.example.memoryplus.repositories;
 
 import android.content.Context;
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.TypeDao;
-import com.example.memoryplus.entity.Type;
+import com.example.memoryplus.entities.Type;
 import java.util.List;
 
 public class TypeRepository {

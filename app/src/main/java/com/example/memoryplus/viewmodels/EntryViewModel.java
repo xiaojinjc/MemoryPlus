@@ -1,4 +1,4 @@
-package com.example.memoryplus.viewmodel;
+package com.example.memoryplus.viewmodels;
 
 import android.app.Application;
 
@@ -7,11 +7,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
-import com.example.memoryplus.entity.EntryDB;
-import com.example.memoryplus.item.EntryItem;
-import com.example.memoryplus.item.HeaderItem;
-import com.example.memoryplus.item.ListItem;
-import com.example.memoryplus.repository.EntryRepository;
+import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.items.EntryItem;
+import com.example.memoryplus.items.HeaderItem;
+import com.example.memoryplus.items.ListItem;
+import com.example.memoryplus.repositories.EntryRepository;
 
 import java.util.ArrayList;
 import java.util.List;

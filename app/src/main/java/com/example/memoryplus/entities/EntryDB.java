@@ -1,4 +1,4 @@
-package com.example.memoryplus.entity;
+package com.example.memoryplus.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;

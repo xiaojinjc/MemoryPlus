@@ -1,4 +1,4 @@
-package com.example.memoryplus.repository;
+package com.example.memoryplus.repositories;
 
 import android.content.Context;
 
@@ -6,8 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.CategoryDao;
-import com.example.memoryplus.entity.Category;
-import com.example.memoryplus.entity.EntryDB;
+import com.example.memoryplus.entities.Category;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

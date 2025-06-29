@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.R;
-import com.example.memoryplus.entity.Category;
+import com.example.memoryplus.entities.Category;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.memoryplus.R;
-import com.example.memoryplus.item.EntryItem;
-import com.example.memoryplus.item.HeaderItem;
-import com.example.memoryplus.item.ListItem;
+import com.example.memoryplus.items.EntryItem;
+import com.example.memoryplus.items.HeaderItem;
+import com.example.memoryplus.items.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -9,12 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import com.example.memoryplus.adapters.CategoryAdapter;
 import com.example.memoryplus.dao.CategoryDao;
-import com.example.memoryplus.entity.Category;
-import com.example.memoryplus.viewmodel.CategoryViewModel;
+import com.example.memoryplus.entities.Category;
+import com.example.memoryplus.viewmodels.CategoryViewModel;
 
 public class CategoryActivity extends AppCompatActivity {
 

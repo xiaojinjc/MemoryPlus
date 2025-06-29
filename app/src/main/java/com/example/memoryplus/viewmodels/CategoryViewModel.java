@@ -1,4 +1,4 @@
-package com.example.memoryplus.viewmodel;
+package com.example.memoryplus.viewmodels;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.memoryplus.entity.Category;
-import com.example.memoryplus.repository.CategoryRepository;
+import com.example.memoryplus.entities.Category;
+import com.example.memoryplus.repositories.CategoryRepository;
 
 import java.util.List;
 

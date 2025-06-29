@@ -11,10 +11,10 @@ import com.example.memoryplus.dao.EntryDao;
 import com.example.memoryplus.dao.SuggestionDao;
 import com.example.memoryplus.dao.TypeDao;
 
-import com.example.memoryplus.entity.Category;
-import com.example.memoryplus.entity.EntryDB;
-import com.example.memoryplus.entity.Suggestion;
-import com.example.memoryplus.entity.Type;
+import com.example.memoryplus.entities.Category;
+import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.Suggestion;
+import com.example.memoryplus.entities.Type;
 
 @Database(entities = {Category.class, Type.class, Suggestion.class, EntryDB.class}, version = 1)
 //@TypeConverters({Converters.class}) // You’ll need this for Date

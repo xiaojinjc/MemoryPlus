@@ -8,7 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.memoryplus.entity.Category;
+import com.example.memoryplus.entities.Category;
 
 import java.util.List;
 
