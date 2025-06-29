@@ -44,7 +44,6 @@ public class CategoryActivity extends AppCompatActivity {
                 viewModel.insertCategory(new Category("Outside"));
             }
         });
-
     }
 
 
