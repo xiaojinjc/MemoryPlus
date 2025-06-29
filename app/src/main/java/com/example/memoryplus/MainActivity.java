@@ -5,22 +5,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.example.memoryplus.adapters.EntryAdapter;
-//import com.example.memoryplus.model.Entry;
 import com.example.memoryplus.adapters.EntryGroupedAdapter;
-import com.example.memoryplus.utils.EntryStorage;
-import com.example.memoryplus.utils.FilenameUtils;
 import com.example.memoryplus.viewmodel.EntryViewModel;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private  EntryViewModel entryViewModel;
     private EntryGroupedAdapter adapter;
 
-    private ImageButton button;
+    private ImageButton mainSettingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +47,32 @@ public class MainActivity extends AppCompatActivity {
             adapter.setItems(groupedItems);
         });
 
-        button = findViewById(R.id.button3);
-        button.setOnClickListener(new View.OnClickListener() {
+
+//        Open popup menu
+        mainSettingButton = findViewById(R.id.button3);
+        mainSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, CategoryActivity.class));
+                Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+                PopupMenu settingPopup = new PopupMenu(wrapper, mainSettingButton);
+                settingPopup.getMenuInflater().inflate(R.menu.setting_popup, settingPopup.getMenu());
+
+                settingPopup.setOnMenuItemClickListener(menuItem -> {
+                    int itemId = menuItem.getItemId();
+                    if (itemId == R.id.createCat)
+                    {
+                        startActivity(new Intent(MainActivity.this, CategoryActivity.class));
+                        return true;
+                    }
+                    else if (itemId == R.id.createType) {
+                        Toast.makeText(MainActivity.this,"Create Type is pressed", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
+                    return false;
+                });
+
+                settingPopup.show();
             }
         });
 
