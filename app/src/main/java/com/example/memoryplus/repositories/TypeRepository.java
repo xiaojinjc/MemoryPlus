@@ -1,6 +1,9 @@
 package com.example.memoryplus.repositories;
 
 import android.content.Context;
+
+import androidx.lifecycle.LiveData;
+
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.TypeDao;
 import com.example.memoryplus.entities.Type;
@@ -26,7 +29,7 @@ public class TypeRepository {
         new Thread(() -> typeDao.delete(type)).start();
     }
 
-    public List<Type> getAll() {
+    public LiveData<List<Type>> getAll() {
         return typeDao.getAll();
     }
 

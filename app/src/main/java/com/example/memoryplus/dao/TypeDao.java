@@ -1,5 +1,6 @@
 package com.example.memoryplus.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -29,5 +30,5 @@ public interface TypeDao {
     Type getById(int id);
 
     @Query("SELECT * FROM types ORDER BY name ASC")
-    List<Type> getAll();
+    LiveData<List<Type>> getAll();
 }
