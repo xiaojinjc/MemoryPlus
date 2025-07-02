@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                     else if (itemId == R.id.createType) {
-                        Toast.makeText(MainActivity.this,"Create Type is pressed", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(MainActivity.this, TypeActivity.class));
                         return true;
                     }
 
