@@ -17,6 +17,8 @@ import com.example.memoryplus.dao.CategoryDao;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 
+import java.util.List;
+
 public class CategoryActivity extends AppCompatActivity {
 
     @Override
@@ -42,20 +44,39 @@ public class CategoryActivity extends AppCompatActivity {
         Button addCategory = findViewById(R.id.addCategory);
         EditText categoryInput = findViewById(R.id.categoryInput);
 
-//        TODO: add validation for duplicates and char length
         addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String catName = categoryInput.getText().toString().trim();
+                List<Category> currentList = viewModel.getAllCategories().getValue();
 
-                if (!catName.isEmpty()){
-                    Category temp = new Category(catName);
-                    viewModel.insertCategory(temp);
-                    categoryInput.setText("");
+                if (catName.isEmpty()){
+                    Toast.makeText(CategoryActivity.this, "Category name can't be empty.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                else {
-                    Toast.makeText(CategoryActivity.this, "Can't make empty category", Toast.LENGTH_SHORT).show();
+                if (catName.length() > 30) {
+                    Toast.makeText(CategoryActivity.this, "Category name can't exceed 30 characters.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (currentList != null) {
+                    boolean duplicate = false;
+                    for (Category c : currentList) {
+                        if (c.name.equalsIgnoreCase(catName)){
+                            duplicate = true;
+                            break;
+                        }
+                    }
+
+                    if (duplicate) {
+                        Toast.makeText(CategoryActivity.this, "Category " + catName + " already exists.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                Category newCategory = new Category(catName);
+                viewModel.insertCategory(newCategory);
+                categoryInput.setText("");
+
             }
         });
     }
