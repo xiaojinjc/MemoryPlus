@@ -7,7 +7,11 @@ import androidx.lifecycle.LiveData;
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.TypeDao;
 import com.example.memoryplus.entities.Type;
+import com.example.memoryplus.entities.TypeWithCategory;
+
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TypeRepository {
     private final TypeDao typeDao;
@@ -17,16 +21,18 @@ public class TypeRepository {
         typeDao = db.typeDao();
     }
 
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     public void insert(Type type) {
-        new Thread(() -> typeDao.insert(type)).start();
+        executor.execute(() -> typeDao.insert(type));
     }
 
     public void update(Type type) {
-        new Thread(() -> typeDao.update(type)).start();
+        executor.execute(() -> typeDao.update(type));
     }
 
     public void delete(Type type) {
-        new Thread(() -> typeDao.delete(type)).start();
+        executor.execute(() -> typeDao.delete(type));
     }
 
     public LiveData<List<Type>> getAll() {
@@ -39,5 +45,9 @@ public class TypeRepository {
 
     public List<Type> getByCategoryId(Integer categoryId) {
         return typeDao.getByCategoryId(categoryId);
+    }
+
+    public LiveData<List<TypeWithCategory>> getCategoryByType(){
+        return typeDao.getAllWithCategories();
     }
 }

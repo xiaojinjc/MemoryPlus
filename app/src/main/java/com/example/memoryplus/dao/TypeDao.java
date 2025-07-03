@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.memoryplus.entities.Type;
+import com.example.memoryplus.entities.TypeWithCategory;
 
 import java.util.List;
 
@@ -31,4 +32,8 @@ public interface TypeDao {
 
     @Query("SELECT * FROM types ORDER BY name ASC")
     LiveData<List<Type>> getAll();
+
+    @Query("SELECT * FROM types")
+    LiveData<List<TypeWithCategory>> getAllWithCategories();
+
 }
