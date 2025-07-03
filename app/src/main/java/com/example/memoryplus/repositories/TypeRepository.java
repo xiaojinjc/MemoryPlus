@@ -47,7 +47,7 @@ public class TypeRepository {
         return typeDao.getByCategoryId(categoryId);
     }
 
-    public LiveData<List<TypeWithCategory>> getCategoryByType(){
+    public LiveData<List<TypeWithCategory>> getAllWithCategories(){
         return typeDao.getAllWithCategories();
     }
 }

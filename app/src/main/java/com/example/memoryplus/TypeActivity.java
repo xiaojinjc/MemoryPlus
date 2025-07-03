@@ -2,12 +2,15 @@ package com.example.memoryplus;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.memoryplus.adapters.TypeAdapter;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 import com.example.memoryplus.viewmodels.TypeViewModel;
@@ -32,6 +35,16 @@ public class TypeActivity extends AppCompatActivity {
             Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
             updateSpinner(categories);
         });
+
+        RecyclerView recyclerView = findViewById(R.id.typeCatList);
+        TypeAdapter adapter = new TypeAdapter();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        typeViewModel.getAllTypesWithCategories().observe(this, types -> {
+            adapter.setItemList(types);
+        });
+
     }
 
     private void updateSpinner(List<Category> categories) {
