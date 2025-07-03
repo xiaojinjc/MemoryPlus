@@ -25,10 +25,9 @@ public class CategoryRepository {
 //    }
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        public void insert(Category category) {
-            executor.execute(() -> categoryDao.insert(category));
-        }
-
+    public void insert(Category category) {
+        executor.execute(() -> categoryDao.insert(category));
+    }
 
     public void update(Category category) {
         new Thread(() -> categoryDao.update(category)).start();
