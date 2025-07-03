@@ -16,4 +16,9 @@ public class Category {
     public Category(@NonNull String name){
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
