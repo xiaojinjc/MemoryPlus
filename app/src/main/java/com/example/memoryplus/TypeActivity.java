@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.example.memoryplus.adapters.TypeAdapter;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.entities.Type;
+import com.example.memoryplus.entities.TypeWithCategory;
+import com.example.memoryplus.repositories.TypeRepository;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 import com.example.memoryplus.viewmodels.TypeViewModel;
 
@@ -47,43 +49,52 @@ public class TypeActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         typeViewModel.getAllTypesWithCategories().observe(this, types -> {
+            Log.d("CategoryObserver", "Received category list of size: " + types.size());
             adapter.setItemList(types);
         });
 
         Button addType = findViewById(R.id.addType);
         EditText typeInput = findViewById(R.id.typeInput);
-        List<Type> currentList = typeViewModel.getAllTypes().getValue();
+
 
         addType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String typeName = typeInput.getText().toString().trim();
+                List<TypeWithCategory> currentList = typeViewModel.getAllTypesWithCategories().getValue();
 
 //                Validation
                 if (spinner.getSelectedItem() == null){
-                    Toast.makeText(TypeActivity.this, "No category has been selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TypeActivity.this, "No category has been selected.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (typeName.isEmpty()){
-                    Toast.makeText(TypeActivity.this, "No category has been selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TypeActivity.this, "Type name can't be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                Category cat = (Category) spinner.getSelectedItem();
+
+                Log.d("AddType", "currentList size: " + (currentList == null ? "null" : currentList.size()));
+//                TODO: fix duplicate
                 if (currentList != null){
+                    Log.d("AddType", "enter main if");
                     boolean duplicate = false;
-                    for (Type t : currentList) {
-                        if (t.name.equalsIgnoreCase(typeName)){
+                    for (TypeWithCategory t : currentList) {
+                        if (t.type.name.equalsIgnoreCase(typeName) && t.category.id == cat.id){
                             duplicate = true;
+                            Log.d("AddType", "duplicate found");
                             break;
                         }
                     }
 
                     if (duplicate) {
-                        Toast.makeText(TypeActivity.this, "No category has been selected", Toast.LENGTH_SHORT).show();
+                        Log.d("AddType", "reach duplicate if");
+                        Toast.makeText(TypeActivity.this, "No duplicate types of the same category can be added.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
 
-                Category cat = (Category) spinner.getSelectedItem();
                 Type newType = new Type(cat.id, typeName);
                 typeViewModel.insertType(newType);
             }

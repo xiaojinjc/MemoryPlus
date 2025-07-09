@@ -24,13 +24,19 @@ public class TypeViewModel extends AndroidViewModel {
         allTypesWithCategories = (LiveData<List<TypeWithCategory>>) repository.getAllWithCategories();
     }
 
-    public LiveData<List<Type>> getAllTypes() { return allTypes; }
+    public LiveData<List<Type>> getAllTypes() {
+        return allTypes;
+    }
 
-    public LiveData<List<TypeWithCategory>> getAllTypesWithCategories() { return allTypesWithCategories; }
+    public LiveData<List<TypeWithCategory>> getAllTypesWithCategories() {
+        return allTypesWithCategories;
+    }
 
     public void insertType(Type type) { repository.insert(type); }
 
-    public void deleteType(Type type) { repository.delete(type); }
+    public void deleteType(Type type) {
+        repository.delete(type);
+    }
 
 //    TODO: add method for getTypeListByCat, Livedata?
 }
