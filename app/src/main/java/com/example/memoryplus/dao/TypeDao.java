@@ -36,4 +36,7 @@ public interface TypeDao {
     @Query("SELECT * FROM types")
     LiveData<List<TypeWithCategory>> getAllWithCategories();
 
+    @Query("UPDATE types SET categoryId = :newCategoryId WHERE categoryId = :oldCategoryId")
+    void updateTypesToCategory(int oldCategoryId, int newCategoryId);
+
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.CategoryDao;
+import com.example.memoryplus.dao.TypeDao;
 import com.example.memoryplus.entities.Category;
 
 import java.util.List;
@@ -14,10 +15,12 @@ import java.util.concurrent.Executors;
 
 public class CategoryRepository {
     private final CategoryDao categoryDao;
+    private final TypeDao typeDao;
 
     public CategoryRepository(Context context) {
         AppDatabase db = AppDatabase.getInstance(context);
         categoryDao = db.categoryDao();
+        typeDao = db.typeDao();
     }
 
 //    public void insert(Category category) {
@@ -34,7 +37,18 @@ public class CategoryRepository {
     }
 
     public void delete(Category category) {
-        new Thread(() -> categoryDao.delete(category)).start();
+        executor.execute(() -> {
+            int defaultCatId = categoryDao.getUncategorizedCategoryId();
+
+            if (defaultCatId == category.id) {
+//                dont do anything if trying to delete original category
+                return;
+            }
+
+            typeDao.updateTypesToCategory(category.id, defaultCatId);
+
+            categoryDao.delete(category);
+        });
     }
 
     public LiveData<List<Category>> getAll() {

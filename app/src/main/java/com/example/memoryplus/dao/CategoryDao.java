@@ -28,4 +28,7 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM categories WHERE id = :id LIMIT 1")
     Category getById(int id);
+
+    @Query("SELECT id FROM categories WHERE name = 'Uncategorized' LIMIT 1")
+    int getUncategorizedCategoryId();
 }
