@@ -31,8 +31,8 @@ public class TypeRepository {
         executor.execute(() -> typeDao.update(type));
     }
 
-    public void delete(TypeWithCategory type) {
-        executor.execute(() -> typeDao.delete(type.type));
+    public void delete(TypeWithCategory typeWithCategory) {
+        executor.execute(() -> typeDao.delete(typeWithCategory.type));
     }
 
     public LiveData<List<Type>> getAll() {

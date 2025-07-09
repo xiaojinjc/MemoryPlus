@@ -70,7 +70,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
     }
 
     public interface OnTypeClickListener {
-        void onDeleteClick(TypeWithCategory type);
+        void onDeleteClick(TypeWithCategory typeWithCategory);
     }
 
     public void setOnTypeClickListener (TypeAdapter.OnTypeClickListener listener) {

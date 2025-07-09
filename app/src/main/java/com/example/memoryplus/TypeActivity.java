@@ -49,9 +49,9 @@ public class TypeActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        typeViewModel.getAllTypesWithCategories().observe(this, types -> {
-            Log.d("CategoryObserver", "Received category list of size: " + types.size());
-            adapter.setItemList(types);
+        typeViewModel.getAllTypesWithCategories().observe(this, typesWithCategory -> {
+            Log.d("CategoryObserver", "Received category list of size: " + typesWithCategory.size());
+            adapter.setItemList(typesWithCategory);
         });
 
         Button addType = findViewById(R.id.addType);
@@ -101,13 +101,12 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
-        adapter.setOnTypeClickListener(type -> {
+        adapter.setOnTypeClickListener(typeWithCategory -> {
             new AlertDialog.Builder(this)
                     .setTitle("Delete Category")
-                    .setMessage("Are you sure you want to delete \"" + type.type.name + "\"?" +
-                            "\n\nThis will change all types related to "+ type.type.name + " to Uncategorized.")
+                    .setMessage("Are you sure you want to delete \"" + typeWithCategory.type.name + "\"?")
                     .setPositiveButton("Yes", ((dialog, which) -> {
-                        typeViewModel.deleteType(type);
+                        typeViewModel.deleteType(typeWithCategory);
                     }))
                     .setNegativeButton("No", null)
                     .show();
