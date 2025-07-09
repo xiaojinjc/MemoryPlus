@@ -16,6 +16,7 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
     private List<Category> itemList = new ArrayList<>();
+    private OnCategoryClickListener listener;
 
     public void setItemList(List<Category> newCategories){
         itemList = newCategories;
@@ -33,6 +34,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Category item = itemList.get(position);
         holder.text.setText(item.name);
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onDeleteClick(item);
+                }
+            }
+        });
     }
 
     @Override
@@ -49,5 +58,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             text = itemView.findViewById(R.id.categoryText);
             deleteButton = itemView.findViewById(R.id.deleteCat);
         }
+    }
+
+    public interface OnCategoryClickListener {
+        void onDeleteClick(Category category);
+    }
+
+    public void setOnCategoryClickListener (OnCategoryClickListener listener) {
+        this.listener = listener;
     }
 }
