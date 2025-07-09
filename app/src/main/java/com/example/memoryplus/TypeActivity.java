@@ -77,7 +77,6 @@ public class TypeActivity extends AppCompatActivity {
                 Category cat = (Category) spinner.getSelectedItem();
 
                 Log.d("AddType", "currentList size: " + (currentList == null ? "null" : currentList.size()));
-//                TODO: fix duplicate
                 if (currentList != null){
                     Log.d("AddType", "enter main if");
                     boolean duplicate = false;

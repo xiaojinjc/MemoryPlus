@@ -78,6 +78,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
+//        TODO: night theme for alerts
         adapter.setOnCategoryClickListener(category -> {
             new AlertDialog.Builder(this)
                     .setTitle("Delete Category")

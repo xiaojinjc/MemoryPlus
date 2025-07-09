@@ -42,6 +42,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
 
 //    Delete and install app again if there is migration error
+//    TODO: Add migration strategy to database
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
