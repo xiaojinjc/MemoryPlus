@@ -20,6 +20,7 @@ import java.util.List;
 
 public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
     private List<TypeWithCategory> itemList = new ArrayList<>();
+    private TypeAdapter.OnTypeClickListener listener;
 
     public void setItemList(List<TypeWithCategory> newTypes){
         itemList = newTypes;
@@ -38,6 +39,16 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
         TypeWithCategory item = itemList.get(position);
         holder.text.setText(item.type.name);
         holder.catText.setText(item.category.name);
+
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null){
+                    listener.onDeleteClick(item);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -56,5 +67,13 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
             catText = itemView.findViewById(R.id.typeCatText);
             deleteButton = itemView.findViewById(R.id.deleteType);
         }
+    }
+
+    public interface OnTypeClickListener {
+        void onDeleteClick(TypeWithCategory type);
+    }
+
+    public void setOnTypeClickListener (TypeAdapter.OnTypeClickListener listener) {
+        this.listener = listener;
     }
 }

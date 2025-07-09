@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -98,6 +99,18 @@ public class TypeActivity extends AppCompatActivity {
                 Type newType = new Type(cat.id, typeName);
                 typeViewModel.insertType(newType);
             }
+        });
+
+        adapter.setOnTypeClickListener(type -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Category")
+                    .setMessage("Are you sure you want to delete \"" + type.type.name + "\"?" +
+                            "\n\nThis will change all types related to "+ type.type.name + " to Uncategorized.")
+                    .setPositiveButton("Yes", ((dialog, which) -> {
+                        typeViewModel.deleteType(type);
+                    }))
+                    .setNegativeButton("No", null)
+                    .show();
         });
     }
 

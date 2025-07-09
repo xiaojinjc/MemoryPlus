@@ -34,7 +34,7 @@ public class TypeViewModel extends AndroidViewModel {
 
     public void insertType(Type type) { repository.insert(type); }
 
-    public void deleteType(Type type) {
+    public void deleteType(TypeWithCategory type) {
         repository.delete(type);
     }
 
