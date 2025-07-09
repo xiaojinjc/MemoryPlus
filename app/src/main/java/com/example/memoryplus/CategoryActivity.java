@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.memoryplus.adapters.CategoryAdapter;
@@ -74,6 +76,18 @@ public class CategoryActivity extends AppCompatActivity {
                 categoryInput.setText("");
 
             }
+        });
+
+        adapter.setOnCategoryClickListener(category -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Category")
+                    .setMessage("Are you sure you want to delete \"" + category.name + "\"?" +
+                            "\n\nThis will change all types related to "+ category.name + " to Uncategorized.")
+                    .setPositiveButton("Yes", ((dialog, which) -> {
+                        viewModel.deleteCategory(category);
+                    }))
+                    .setNegativeButton("No", null)
+                    .show();
         });
     }
 
