@@ -44,6 +44,11 @@
         android:layout_marginTop="364dp"
         android:layout_weight="1"
         android:hint="Enter type"
+
+        android:maxLines="1"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/typeCatList" />
