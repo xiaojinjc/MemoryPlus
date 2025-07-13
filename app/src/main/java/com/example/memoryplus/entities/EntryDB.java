@@ -10,10 +10,6 @@ import androidx.annotation.NonNull;
 
 @Entity(tableName = "entries",
         foreignKeys = {
-                @ForeignKey(entity = Category.class,
-                        parentColumns = "id",
-                        childColumns = "categoryId",
-                        onDelete = ForeignKey.SET_NULL),
                 @ForeignKey(entity = Type.class,
                         parentColumns = "id",
                         childColumns = "typeId",
@@ -28,9 +24,6 @@ public class EntryDB {
     @NonNull
     public String date;
 
-    @NonNull
-    public int categoryId;
-
     public  int typeId;
 
     @NonNull
@@ -42,9 +35,8 @@ public class EntryDB {
     public String notes;
 
     // Constructor
-    public EntryDB(@NonNull String date, @NonNull int categoryId, int typeId, @NonNull String description, int partNumber, boolean isComplete, String notes) {
+    public EntryDB(@NonNull String date, int typeId, @NonNull String description, int partNumber, boolean isComplete, String notes) {
         this.date = date;
-        this.categoryId = categoryId;
         this.typeId = typeId;
         this.description = description;
         this.partNumber = partNumber;
