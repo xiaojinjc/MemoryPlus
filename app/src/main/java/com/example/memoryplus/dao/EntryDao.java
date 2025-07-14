@@ -15,7 +15,7 @@ import java.util.List;
 
 @Dao
 public interface EntryDao {
-//    @upsert
+    //    @upsert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(EntryDB entry);
 
@@ -37,10 +37,14 @@ public interface EntryDao {
     @Query("SELECT * FROM entries WHERE typeId = :typeId")
     List<EntryDB> getByTypeId(Integer typeId);
 
-//    Date: long or String
+    //    Date: long or String
     @Query("SELECT * FROM entries WHERE date = :date")
     List<EntryDB> getByDate(String date);
 
     @Query("UPDATE entries SET typeId = :newTypesId WHERE typeId = :oldTypesId")
     void updateEntriesToType(int oldTypesId, int newTypesId);
 
+    //    passing in the format "2025-07" to get all entries from july 2025
+    @Query("SELECT * FROM entries WHERE strftime('%Y-%m', date) = :yearMonth ORDER BY date ASC")
+    LiveData<List<EntryWithType>> getEntriesForMonth(String yearMonth);
+}

@@ -52,4 +52,10 @@ public class EntryRepository {
     public LiveData<List<EntryWithType>> getAllEntriesWithTypes(){
         return entryDao.getAllWithType();
     }
+
+    public LiveData<List<EntryWithType>> getAllEntriesWithTypeForMonth(int year, int month) {
+//        TODO: fix locale shii for monthStr
+        String monthStr = String.format("%04d-%02d", year, month);
+        return entryDao.getEntriesForMonth(monthStr);
+    }
 }
