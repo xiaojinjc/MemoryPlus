@@ -1,3 +1,5 @@
+package com.example.memoryplus;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +12,19 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memoryplus.R;
 import com.example.memoryplus.adapters.EntryGroupedAdapter;
+import com.example.memoryplus.adapters.EntryGroupedAdapter_2;
 import com.example.memoryplus.viewmodels.EntryViewModel;
+import com.example.memoryplus.viewmodels.EntryViewModel_2;
 
 public class MonthFragment extends Fragment {
 
     private static final String ARG_YEAR = "year";
     private static final String ARG_MONTH = "month";
 
-    private EntryViewModel entryViewModel;
-//    TODO: Update this shii
+    private EntryViewModel_2 entryViewModel;
     private RecyclerView recyclerView;
-    private EntryGroupedAdapter entryGroupedAdapter;
+    private EntryGroupedAdapter_2 entryGroupedAdapter;
 
     public static MonthFragment newInstance(int year, int month) {
         MonthFragment fragment = new MonthFragment();
@@ -42,11 +44,13 @@ public class MonthFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         recyclerView = view.findViewById(R.id.entryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        entryGroupedAdapter = new EntryGroupedAdapter();
+        entryGroupedAdapter = new EntryGroupedAdapter_2();
 
         int year = requireArguments().getInt(ARG_YEAR);
         int month = requireArguments().getInt(ARG_MONTH);
 
-        entryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel.class);
+        entryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel_2.class);
+
+
     }
 }
