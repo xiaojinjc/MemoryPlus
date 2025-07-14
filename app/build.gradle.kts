@@ -42,8 +42,8 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.room:room-runtime:2.7.2")
-//    implementation("androidx.room:room-common-jvm:2.7.1")
     annotationProcessor("androidx.room:room-compiler:2.7.2")
     implementation("androidx.lifecycle:lifecycle-livedata:2.9.1")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 }
 
