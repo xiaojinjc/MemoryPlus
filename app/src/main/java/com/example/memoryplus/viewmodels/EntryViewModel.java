@@ -8,7 +8,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 
 import com.example.memoryplus.entities.EntryDB;
-import com.example.memoryplus.items.EntryItem;
 import com.example.memoryplus.items.HeaderItem;
 import com.example.memoryplus.items.ListItem;
 import com.example.memoryplus.repositories.EntryRepository;
@@ -50,9 +49,9 @@ public class EntryViewModel extends AndroidViewModel {
 
             String typeName = "Type" + entry.typeId; // Replace with real lookup
 
-            String part = entry.partNumber > 0 ? entry.partNumber + "/" : "";
+//            String part = entry.part > 0 ? entry.part + "/" : "";
 
-            grouped.add(new EntryItem(typeName, entry.description, part, entry.notes));
+//            grouped.add(new EntryItem(typeName, entry.description, part, entry.notes));
         }
         return grouped;
     }

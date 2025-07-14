@@ -32,16 +32,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.entryRecyclerView);
-        adapter = new EntryGroupedAdapter();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        entryViewModel = new ViewModelProvider(this).get(EntryViewModel.class);
-
-        entryViewModel.getGroupedItems().observe(this, groupedItems -> {
-            adapter.setItems(groupedItems);
-        });
+//        RecyclerView recyclerView = findViewById(R.id.entryRecyclerView);
+//        adapter = new EntryGroupedAdapter();
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        entryViewModel = new ViewModelProvider(this).get(EntryViewModel.class);
+//
+//        entryViewModel.getGroupedItems().observe(this, groupedItems -> {
+//            adapter.setItems(groupedItems);
+//        });
 
 
 //        Open popup menu
