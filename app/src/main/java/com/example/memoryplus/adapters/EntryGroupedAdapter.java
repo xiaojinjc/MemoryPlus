@@ -96,14 +96,15 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((HeaderViewHolder) holder).dateText.setText(tempDate);     // here
             ((HeaderViewHolder) holder).pinIcon.setVisibility(header.food ? View.VISIBLE : View.GONE);
             ((HeaderViewHolder) holder).checkIcon.setVisibility(header.gym ? View.VISIBLE : View.GONE);
-        } else {
-            EntryItem entry = (EntryItem) item;
-            String line = entry.type + " " + entry.description;
-            if (entry.part != null && !entry.part.isEmpty()) {
-                line += " " + entry.part;
-            }
-            ((EntryViewHolder) holder).entryText.setText(line);
         }
+//        else {
+//            EntryItem entry = (EntryItem) item;
+//            String line = entry.type + " " + entry.description;
+//            if (entry.part != null && !entry.part.isEmpty()) {
+//                    line += " " + entry.part;
+//            }
+//            ((EntryViewHolder) holder).entryText.setText(line);
+//        }
     }
 
 //    Interface to handle clicks, delegating responsibility to parent
