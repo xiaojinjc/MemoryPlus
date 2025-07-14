@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
                         childColumns = "typeId",
                         onDelete = ForeignKey.SET_NULL)
         },
-        indices = {@Index("categoryId"), @Index("typeId")})
+        indices = {@Index("typeId")})
 public class EntryDB {
 
     @PrimaryKey(autoGenerate = true)
@@ -29,17 +29,17 @@ public class EntryDB {
     @NonNull
     public String description;
 
-    public int partNumber;
+    public String part;
     public boolean isComplete;
 
     public String notes;
 
     // Constructor
-    public EntryDB(@NonNull String date, int typeId, @NonNull String description, int partNumber, boolean isComplete, String notes) {
+    public EntryDB(@NonNull String date, int typeId, @NonNull String description, String part, boolean isComplete, String notes) {
         this.date = date;
         this.typeId = typeId;
         this.description = description;
-        this.partNumber = partNumber;
+        this.part = part;
         this.isComplete = isComplete;
         this.notes = notes;
     }

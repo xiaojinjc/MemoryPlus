@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.example.memoryplus.AppDatabase;
 import com.example.memoryplus.dao.EntryDao;
 import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.EntryWithType;
 
 import java.util.List;
 
@@ -37,10 +38,6 @@ public class EntryRepository {
 
     public EntryDB getById(int id) {
         return entryDao.getById(id);
-    }
-
-    public List<EntryDB> getByCategoryId(Integer categoryId) {
-        return entryDao.getByCategoryId(categoryId);
     }
 
     public List<EntryDB> getByTypeId(Integer typeId) {

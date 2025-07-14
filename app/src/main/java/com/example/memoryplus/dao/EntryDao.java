@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.EntryWithType;
 
 import java.util.List;
 
@@ -29,9 +30,6 @@ public interface EntryDao {
 
     @Query("SELECT * FROM entries WHERE id = :id")
     EntryDB getById(int id);
-
-    @Query("SELECT * FROM entries WHERE categoryId = :categoryId")
-    List<EntryDB> getByCategoryId(Integer categoryId);
 
     @Query("SELECT * FROM entries WHERE typeId = :typeId")
     List<EntryDB> getByTypeId(Integer typeId);
