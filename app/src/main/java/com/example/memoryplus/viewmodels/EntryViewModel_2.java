@@ -41,25 +41,7 @@ public class EntryViewModel_2 extends AndroidViewModel {
         repository.delete(entry);
     }
 
-    public List<ListItem> groupEntriesByDate(List<EntryWithType> entriesWithType) {
-        List<ListItem> result = new ArrayList<>();
-//        ??
-        String lastDate = null;
-
-        DateTimeFormatter dbFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        for (EntryWithType entry : entriesWithType) {
-            String entryDate = entry.entryDB.date;
-            if (!entryDate.equals(lastDate)) {
-                LocalDate date = LocalDate.parse(entryDate, dbFormat);
-                result.add(new HeaderItem(displayFormat.format(date), true, false));
-                lastDate = entryDate;
-            }
-            result.add(new EntryItem(entry));
-        }
-
-        return result;
+    public LiveData<List<EntryWithType>> getEntriesWithTypeForMonth (int year, int month) {
+        return repository.getAllEntriesWithTypeForMonth(year, month);
     }
-
 }
