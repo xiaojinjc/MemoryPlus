@@ -28,6 +28,9 @@ public interface EntryDao {
     @Query("SELECT * FROM entries ORDER BY date DESC")
     LiveData<List<EntryDB>> getAllLive();
 
+    @Query("SELECT * FROM entries ORDER BY date DESC")
+    LiveData<List<EntryWithType>> getAllWithType();
+
     @Query("SELECT * FROM entries WHERE id = :id")
     EntryDB getById(int id);
 
@@ -37,4 +40,7 @@ public interface EntryDao {
 //    Date: long or String
     @Query("SELECT * FROM entries WHERE date = :date")
     List<EntryDB> getByDate(String date);
-}
+
+    @Query("UPDATE entries SET typeId = :newTypesId WHERE typeId = :oldTypesId")
+    void updateEntriesToType(int oldTypesId, int newTypesId);
+

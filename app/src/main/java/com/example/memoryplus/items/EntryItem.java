@@ -1,16 +1,13 @@
 package com.example.memoryplus.items;
 
-public class EntryItem implements ListItem {
-    public String type;
-    public String description;
-    public String part;
-    public String notes;
+import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.EntryWithType;
 
-    public EntryItem(String type, String description, String part, String notes) {
-        this.type = type;
-        this.description = description;
-        this.part = part;
-        this.notes = notes;
+public class EntryItem implements ListItem {
+    public final EntryWithType entryWithType;
+
+    public EntryItem(EntryWithType entry) {
+        this.entryWithType = entry;
     }
 
     @Override

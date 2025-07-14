@@ -48,4 +48,8 @@ public class EntryRepository {
     public List<EntryDB> getByDate(String dateMillis) {
         return entryDao.getByDate(dateMillis);
     }
+
+    public LiveData<List<EntryWithType>> getAllEntriesWithTypes(){
+        return entryDao.getAllWithType();
+    }
 }
