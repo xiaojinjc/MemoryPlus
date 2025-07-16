@@ -41,6 +41,10 @@ public class EntryViewModel_2 extends AndroidViewModel {
         repository.delete(entry);
     }
 
+    public LiveData<List<EntryDB>> getAllLive() {
+        return repository.getAllLive();
+    }
+
     public LiveData<List<EntryWithType>> getEntriesWithTypeForMonth (int year, int month) {
         return repository.getAllEntriesWithTypeForMonth(year, month);
     }

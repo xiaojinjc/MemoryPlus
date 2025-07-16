@@ -1,5 +1,6 @@
 package com.example.memoryplus.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void setItems(List<ListItem> items) {
         this.items = items;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -31,22 +33,26 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
         if (viewType == ListItem.TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_entry_header, parent, false);
             return new HeaderViewHolder(view);
-        } else {
+        } else if (viewType == ListItem.TYPE_ENTRY) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_item_row, parent, false);
             return new EntryViewHolder(view);
+        } else {
+            throw new IllegalArgumentException("Unknown view type" + viewType);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Log.d("EntryAdapter", "Binding item at position " + position);
+
         ListItem item = items.get(position);
-        if (holder instanceof HeaderViewHolder) {
+        if (holder instanceof HeaderViewHolder && item instanceof HeaderItem) {
             HeaderItem header = (HeaderItem) item;
             String tempDate = "「" + header.date + "」";
             ((HeaderViewHolder) holder).dateText.setText(tempDate);
             ((HeaderViewHolder) holder).pinIcon.setVisibility(header.food ? View.VISIBLE : View.GONE);
             ((HeaderViewHolder) holder).checkIcon.setVisibility(header.gym ? View.VISIBLE : View.GONE);
-        } else {
+        } else if (holder instanceof  EntryViewHolder && item instanceof EntryItem){
             EntryItem tempEntry = (EntryItem) item;
             EntryWithType entryWithType = tempEntry.entryWithType;
             String line = entryWithType.type.name + " " + entryWithType.entryDB.description;
@@ -56,12 +62,19 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
 //                TODO: make parts automatic?
                 line += " " + entryWithType.entryDB.part;
             }
+            Log.d("EntryAdapter", "desc: " + entryWithType.entryDB.description);
+            ((EntryViewHolder) holder).entryText.setText(line);
         }
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).getType();
     }
 
     public static class HeaderViewHolder extends RecyclerView.ViewHolder {

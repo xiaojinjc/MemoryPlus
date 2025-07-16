@@ -1,6 +1,7 @@
 package com.example.memoryplus;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.adapters.EntryGroupedAdapter;
 import com.example.memoryplus.adapters.EntryGroupedAdapter_2;
+import com.example.memoryplus.entities.EntryDB;
 import com.example.memoryplus.entities.EntryWithType;
 import com.example.memoryplus.items.EntryItem;
 import com.example.memoryplus.items.HeaderItem;
@@ -51,17 +53,26 @@ public class MonthFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recyclerView = view.findViewById(R.id.entryRecyclerView);
+        recyclerView = view.findViewById(R.id.recyclerViewEntries);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new EntryGroupedAdapter_2();
+        recyclerView.setAdapter(adapter);
 
         int year = requireArguments().getInt(ARG_YEAR);
         int month = requireArguments().getInt(ARG_MONTH);
+        Log.d("Month", "mfer the month is "+ month +" and the year is " + year);
 
         entryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel_2.class);
 
+        entryViewModel.getAllLive().observe(getViewLifecycleOwner(), list -> {
+            for (EntryDB e : list){
+                Log.d("Debug", "Entry: " + e.description + ", date: " + e.date);
+            }
+        });
+
         entryViewModel.getEntriesWithTypeForMonth(year, month)
                 .observe(getViewLifecycleOwner(), entryWithTypes -> {
+                    Log.d("MonthFragment", "Got " + entryWithTypes.size() + " entries for " + month + "/" + year);
                     List<ListItem> grouped = groupEntriesByDate(entryWithTypes);
                     adapter.setItems(grouped);
                 });
