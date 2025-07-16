@@ -10,8 +10,7 @@ import androidx.room.PrimaryKey;
         foreignKeys = @ForeignKey(
                 entity = Category.class,
                 parentColumns = "id",
-                childColumns = "categoryId",
-                onDelete = ForeignKey.SET_NULL
+                childColumns = "categoryId"
         ),
         indices = {@Index("categoryId")}
 )
@@ -20,7 +19,7 @@ public class Type {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public int categoryId; // Foreign key to Category
+    public Integer categoryId; // Foreign key to Category
 
     @NonNull
     public String name; // e.g., Movie, Anime, GI

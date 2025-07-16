@@ -24,7 +24,7 @@ public class EntryDB {
     @NonNull
     public String date;
 
-    public  int typeId;
+    public Integer typeId;
 
     @NonNull
     public String description;
