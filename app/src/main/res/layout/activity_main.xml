@@ -86,12 +86,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Your main content below -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/entryRecyclerView"
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/entryRecyclerView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="?attr/actionBarSize"-->
+<!--        android:padding="10dp" />-->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/monthViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="10dp" />
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addEntryFab"

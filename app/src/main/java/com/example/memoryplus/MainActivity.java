@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.memoryplus.adapters.EntryGroupedAdapter;
+import com.example.memoryplus.adapters.MonthPagerAdapter;
 import com.example.memoryplus.viewmodels.EntryViewModel;
 
 import android.content.Context;
@@ -16,6 +18,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
 //        entryViewModel.getGroupedItems().observe(this, groupedItems -> {
 //            adapter.setItems(groupedItems);
 //        });
+
+        ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
+        MonthPagerAdapter pagerAdapter = new MonthPagerAdapter(this);
+        monthViewPager.setAdapter(pagerAdapter);
+
+        // Optional: Set current page to current month
+        int startYear = 2024;
+        int startMonth = 1;
+
+        LocalDate today = LocalDate.now();
+        int monthsSinceStart = (today.getYear() - startYear) * 12 + (today.getMonthValue() - startMonth);
+        monthViewPager.setCurrentItem(monthsSinceStart, false);
+
 
 
 //        Open popup menu
