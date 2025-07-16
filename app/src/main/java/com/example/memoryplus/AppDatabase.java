@@ -36,6 +36,15 @@ public abstract class AppDatabase extends RoomDatabase {
             super.onCreate(db);
             Executors.newSingleThreadExecutor().execute(() -> {
                 db.execSQL("INSERT INTO categories (name) VALUES ('Uncategorized')");
+                db.execSQL("INSERT INTO types (name, categoryId) VALUES ('Fake Type', 1)");
+                db.execSQL("INSERT INTO entries (typeId, description, date, part, notes, isComplete) " +
+                        "VALUES (1, 'Test description', '2025-06-01', '1/', 'Some notes here', 1)");
+                db.execSQL("INSERT INTO entries (typeId, description, date, part, notes, isComplete)" +
+                        "VALUES (1, 'WHAT DU HELLI', '2025-07-06', '1/', 'EXTRA', 0)");
+                db.execSQL("INSERT INTO entries (typeId, description, date, part, notes, isComplete)" +
+                        "VALUES (1, 'WHAT DU HELLI', '2025-06-02', '1/', 'EXTRA', 0)");
+                db.execSQL("INSERT INTO entries (typeId, description, date, part, notes, isComplete)" +
+                        "VALUES (1, 'WHAT DU HELLI', '2025-06-01', '1/', 'EXTRA', 0)");
             });
         }
     };
