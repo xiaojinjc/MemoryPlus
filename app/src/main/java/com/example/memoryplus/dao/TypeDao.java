@@ -39,4 +39,7 @@ public interface TypeDao {
     @Query("UPDATE types SET categoryId = :newCategoryId WHERE categoryId = :oldCategoryId")
     void updateTypesToCategory(int oldCategoryId, int newCategoryId);
 
+    @Query("SELECT id FROM types WHERE name = 'Untyped' LIMIT 1")
+    int getUncategorizedTypeId();
+
 }
