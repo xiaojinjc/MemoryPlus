@@ -10,8 +10,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.memoryplus.adapters.EntryGroupedAdapter;
 import com.example.memoryplus.adapters.MonthPagerAdapter;
 import com.example.memoryplus.entities.Category;
+import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.Type;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 import com.example.memoryplus.viewmodels.EntryViewModel;
+import com.example.memoryplus.viewmodels.EntryViewModel_2;
 import com.example.memoryplus.viewmodels.TypeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -22,8 +25,10 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
@@ -120,11 +125,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void showCreatePopup() {
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
 
         View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.create_entry_popup, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setView(popupView);
         AlertDialog dialog = builder.create();
+        dialog.show();
 
 
         EditText dateInput = popupView.findViewById(R.id.popup_date_field);
@@ -132,32 +139,69 @@ public class MainActivity extends AppCompatActivity {
         Spinner catInput = popupView.findViewById(R.id.popup_category_spinner);
         EditText descInput = popupView.findViewById(R.id.popup_description_field);
         EditText partInput = popupView.findViewById(R.id.popup_part_field);
+        CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
         EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
         Button createButton = popupView.findViewById(R.id.popup_create);
         Button cancelButton = popupView.findViewById(R.id.popup_cancel);
 
         categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
-            List<Category> categoriesWithAll = new ArrayList<>();
+            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
             Category temp = new Category("Any");
             temp.id = -1;
             categoriesWithAll.add(temp);
             categoriesWithAll.addAll(categories);
-            ArrayAdapter<Category> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, categoriesWithAll);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            catInput.setAdapter(adapter);
+            ArrayAdapter<Category> catAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, categoriesWithAll);
+            catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            catInput.setAdapter(catAdapter);
+        });
+
+        typeViewModel.getAllTypes().observe(this, types -> {
+            List<Type> allTypes = new ArrayList<>(types);
+
+            catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Category selectedCat = (Category) catInput.getSelectedItem();
+
+                    List<Type> filteredTypes;
+                    if (selectedCat.id == -1){
+                        filteredTypes = allTypes;
+                    } else {
+                        filteredTypes = new ArrayList<>();
+                        for (Type t : allTypes) {
+                            if (t.categoryId == selectedCat.id) {
+                                filteredTypes.add(t);
+                            }
+                        }
+                    }
+
+                    ArrayAdapter<Type> typeAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, filteredTypes);
+                    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    typeInput.setAdapter(typeAdapter);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    return;
+                }
+            });
         });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String date = dateInput.getText().toString();
-//                String desc = descInput.getText().toString();
-//                String part = partInput.getText().toString();
-//                String notes = notesInput.getText().toString();
-                Log.d("CREATE", "onClick: gyatt");
+                EntryViewModel_2 entryViewModel = new ViewModelProvider(MainActivity.this).get(EntryViewModel_2.class);
+
+                String date = dateInput.getText().toString();
+                Type type = (Type) typeInput.getSelectedItem();
+                String desc = descInput.getText().toString();
+                String part = partInput.getText().toString();
+                Boolean isComplete = completeInput.isActivated();
+                String notes = notesInput.getText().toString();
+
+                EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
+                entryViewModel.insertEntry(newEntry);
             }
         });
-
-        dialog.show();
     }
 }
