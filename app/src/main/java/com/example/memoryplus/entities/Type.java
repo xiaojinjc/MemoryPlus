@@ -28,5 +28,10 @@ public class Type {
         this.categoryId = categoryId;
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
 
