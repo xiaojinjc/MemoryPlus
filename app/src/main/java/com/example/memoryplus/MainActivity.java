@@ -19,6 +19,7 @@ import com.example.memoryplus.viewmodels.TypeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,11 +129,10 @@ public class MainActivity extends AppCompatActivity {
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
 
         View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.create_entry_popup, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
         builder.setView(popupView);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
+        builder.setMessage("Create Entry");
 
         EditText dateInput = popupView.findViewById(R.id.popup_date_field);
         Spinner typeInput = popupView.findViewById(R.id.popup_type_spinner);
@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         EditText partInput = popupView.findViewById(R.id.popup_part_field);
         CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
         EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
-        Button createButton = popupView.findViewById(R.id.popup_create);
-        Button cancelButton = popupView.findViewById(R.id.popup_cancel);
 
         categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
             List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
@@ -187,21 +185,33 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
-        createButton.setOnClickListener(new View.OnClickListener() {
+        builder.setPositiveButton("Created", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(DialogInterface dialog, int which) {
                 EntryViewModel_2 entryViewModel = new ViewModelProvider(MainActivity.this).get(EntryViewModel_2.class);
 
                 String date = dateInput.getText().toString();
                 Type type = (Type) typeInput.getSelectedItem();
                 String desc = descInput.getText().toString();
                 String part = partInput.getText().toString();
-                Boolean isComplete = completeInput.isActivated();
+                boolean isComplete = completeInput.isActivated();
                 String notes = notesInput.getText().toString();
+
+//                TODO: Add validation for createEntry
 
                 EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
                 entryViewModel.insertEntry(newEntry);
             }
         });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MainActivity.this,"WHATT", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
