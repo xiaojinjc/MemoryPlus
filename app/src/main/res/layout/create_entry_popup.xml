@@ -3,19 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/create_entry_popup"
-    android:layout_height="550dp"
+    android:layout_height="450dp"
     android:layout_width="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/gray"
     android:padding="24dp"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -35,8 +34,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -55,8 +54,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -75,8 +74,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -96,8 +95,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -127,8 +126,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -142,28 +141,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter additional information"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        >
-        <Button
-            android:id="@+id/popup_create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel"
-            />
-
-        <Button
-            android:id="@+id/popup_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create"
             />
     </LinearLayout>
 
