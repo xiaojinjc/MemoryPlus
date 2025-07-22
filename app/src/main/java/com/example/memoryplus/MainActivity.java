@@ -3,7 +3,6 @@ package com.example.memoryplus;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -22,13 +21,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -128,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
 
-        View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.create_entry_popup, null);
+        View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_create_entry, null);
         Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
         AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
         builder.setView(popupView);

@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.memoryplus.R;
-import com.example.memoryplus.items.EntryItem;
 import com.example.memoryplus.items.HeaderItem;
 import com.example.memoryplus.items.ListItem;
 
@@ -50,7 +49,7 @@ public class EntryGroupedAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new HeaderViewHolder(view);
         } else {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.entry_item_row, parent, false);
+                    .inflate(R.layout.item_entry_row, parent, false);
             return new EntryViewHolder(view);
         }
     }

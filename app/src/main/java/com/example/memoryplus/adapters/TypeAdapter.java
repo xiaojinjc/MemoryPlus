@@ -1,6 +1,5 @@
 package com.example.memoryplus.adapters;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.R;
-import com.example.memoryplus.entities.Category;
-import com.example.memoryplus.entities.Type;
 import com.example.memoryplus.entities.TypeWithCategory;
 
 import java.util.ArrayList;
@@ -30,7 +27,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
     @NonNull
     @Override
     public TypeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.type_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_type, parent, false);
         return new MyViewHolder(view);
     }
 

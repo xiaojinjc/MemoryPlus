@@ -34,7 +34,7 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_entry_header, parent, false);
             return new HeaderViewHolder(view);
         } else if (viewType == ListItem.TYPE_ENTRY) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.entry_item_row, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_entry_row, parent, false);
             return new EntryViewHolder(view);
         } else {
             throw new IllegalArgumentException("Unknown view type" + viewType);
