@@ -6,8 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 import com.example.memoryplus.adapters.CategoryAdapter;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -39,16 +44,47 @@ public class CategoryActivity extends AppCompatActivity {
             adapter.setItemList(categories);
         });
 
-        Button addCategory = findViewById(R.id.addCategory);
-        EditText categoryInput = findViewById(R.id.categoryInput);
 
-        addCategory.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createCat = findViewById(R.id.create_cat_fab);
+        createCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showCreateCatPopup();
+            }
+        });
+
+//        TODO: night theme for alerts
+        adapter.setOnCategoryClickListener(category -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Category")
+                    .setMessage("Are you sure you want to delete \"" + category.name + "\"?" +
+                            "\n\nThis will change all types related to "+ category.name + " to Uncategorized.")
+                    .setPositiveButton("Yes", ((dialog, which) -> {
+                        viewModel.deleteCategory(category);
+                    }))
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+    }
+
+    public void showCreateCatPopup() {
+        View popupView = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.create_cat_popup, null);
+        Context wrapper = new ContextThemeWrapper(CategoryActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
+        builder.setView(popupView);
+        builder.setTitle("Create Entry");
+
+        EditText categoryInput = findViewById(R.id.categoryInput);
+
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 String catName = categoryInput.getText().toString().trim();
+                CategoryViewModel viewModel = new ViewModelProvider(CategoryActivity.this).get(CategoryViewModel.class);
+
                 List<Category> currentList = viewModel.getAllCategories().getValue();
 
-                if (catName.isEmpty()){
+                if (catName.isEmpty()) {
                     Toast.makeText(CategoryActivity.this, "Category name can't be empty.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -59,7 +95,7 @@ public class CategoryActivity extends AppCompatActivity {
                 if (currentList != null) {
                     boolean duplicate = false;
                     for (Category c : currentList) {
-                        if (c.name.equalsIgnoreCase(catName)){
+                        if (c.name.equalsIgnoreCase(catName)) {
                             duplicate = true;
                             break;
                         }
@@ -78,18 +114,8 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-//        TODO: night theme for alerts
-        adapter.setOnCategoryClickListener(category -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Delete Category")
-                    .setMessage("Are you sure you want to delete \"" + category.name + "\"?" +
-                            "\n\nThis will change all types related to "+ category.name + " to Uncategorized.")
-                    .setPositiveButton("Yes", ((dialog, which) -> {
-                        viewModel.deleteCategory(category);
-                    }))
-                    .setNegativeButton("No", null)
-                    .show();
-        });
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 
