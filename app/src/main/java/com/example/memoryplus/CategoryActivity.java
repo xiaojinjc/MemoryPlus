@@ -1,11 +1,11 @@
 package com.example.memoryplus;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,9 +13,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.memoryplus.adapters.CategoryAdapter;
@@ -30,7 +28,7 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.category_activity);
+        setContentView(R.layout.activity_category);
 
         CategoryViewModel viewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
@@ -68,11 +66,11 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     public void showCreateCatPopup() {
-        View popupView = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.create_cat_popup, null);
+        View popupView = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.popup_create_cat, null);
         Context wrapper = new ContextThemeWrapper(CategoryActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
         builder.setView(popupView);
-        builder.setTitle("Create Entry");
+        builder.setTitle("Create Category");
 
         EditText categoryInput = findViewById(R.id.categoryInput);
 
@@ -114,7 +112,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        androidx.appcompat.app.AlertDialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
         dialog.show();
     }
 
