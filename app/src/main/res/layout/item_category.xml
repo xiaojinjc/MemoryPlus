@@ -3,7 +3,8 @@
     android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <TextView
         android:id="@+id/categoryText"
@@ -15,9 +16,22 @@
         android:padding="10dp"
         />
 
+
+    <ImageButton
+        android:id="@+id/edit_cat"
+        android:layout_width="24dp"
+        android:layout_weight="0.05"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:src="@drawable/baseline_edit_24"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        />
+
     <ImageButton
         android:id="@+id/deleteCat"
         android:layout_width="24dp"
+        android:layout_weight="0.05"
         android:layout_height="24dp"
         android:layout_gravity="center"
         android:src="@drawable/baseline_delete_24"

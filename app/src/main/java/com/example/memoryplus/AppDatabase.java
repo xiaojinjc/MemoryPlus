@@ -3,6 +3,7 @@ package com.example.memoryplus;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -20,7 +21,10 @@ import com.example.memoryplus.entities.Type;
 
 import java.util.concurrent.Executors;
 
-@Database(entities = {Category.class, Type.class, Suggestion.class, EntryDB.class}, version = 1)
+@Database(
+        entities = {Category.class, Type.class, Suggestion.class, EntryDB.class},
+        version = 2
+        )
 //@TypeConverters({Converters.class}) // You’ll need this for Date
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CategoryDao categoryDao();
