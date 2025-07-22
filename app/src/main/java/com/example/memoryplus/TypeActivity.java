@@ -1,13 +1,17 @@
 package com.example.memoryplus;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,32 +23,22 @@ import com.example.memoryplus.adapters.TypeAdapter;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.entities.Type;
 import com.example.memoryplus.entities.TypeWithCategory;
-import com.example.memoryplus.repositories.TypeRepository;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 import com.example.memoryplus.viewmodels.TypeViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TypeActivity extends AppCompatActivity {
-    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.type_activity);
+        setContentView(R.layout.activity_type);
 
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
-        CategoryViewModel catViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
 
-        spinner = findViewById(R.id.typeCatListSelect);
-
-        catViewModel.getAllCategories().observe(this, categories -> {
-            Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
-            updateSpinner(categories);
-        });
-
-        RecyclerView recyclerView = findViewById(R.id.typeCatList);
+        RecyclerView recyclerView = findViewById(R.id.type_cat_list);
         TypeAdapter adapter = new TypeAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -54,15 +48,52 @@ public class TypeActivity extends AppCompatActivity {
             adapter.setItemList(typesWithCategory);
         });
 
-        Button addType = findViewById(R.id.addType);
-        EditText typeInput = findViewById(R.id.typeInput);
-
-
-        addType.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createCat = findViewById(R.id.create_type_fab);
+        createCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showCreateCatPopup();
+            }
+        });
+
+
+        adapter.setOnTypeClickListener(typeWithCategory -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Category")
+                    .setMessage("Are you sure you want to delete \"" + typeWithCategory.type.name + "\"?")
+                    .setPositiveButton("Yes", ((dialog, which) -> {
+                        typeViewModel.deleteType(typeWithCategory);
+                    }))
+                    .setNegativeButton("No", null)
+                    .show();
+        });
+    }
+
+    private void showCreateCatPopup() {
+        View popupView = LayoutInflater.from(TypeActivity.this).inflate(R.layout.popup_create_type, null);
+        Context wrapper = new ContextThemeWrapper(TypeActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
+        builder.setView(popupView);
+        builder.setTitle("Create Type");
+
+        EditText typeInput = findViewById(R.id.typeInput);
+        Spinner spinner = findViewById(R.id.popup_cat_type_spinner);
+
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TypeViewModel typeViewModel = new ViewModelProvider(TypeActivity.this).get(TypeViewModel.class);
+                CategoryViewModel catViewModel = new ViewModelProvider(TypeActivity.this).get(CategoryViewModel.class);
+
                 String typeName = typeInput.getText().toString().trim();
                 List<TypeWithCategory> currentList = typeViewModel.getAllTypesWithCategories().getValue();
+
+                catViewModel.getAllCategories().observe(TypeActivity.this, categories -> {
+                    Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
+                    ArrayAdapter<Category> adapter = new ArrayAdapter<>(TypeActivity.this, android.R.layout.simple_spinner_dropdown_item, categories);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+                });
 
 //                Validation
                 if (spinner.getSelectedItem() == null){
@@ -100,28 +131,7 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
-        adapter.setOnTypeClickListener(typeWithCategory -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Delete Category")
-                    .setMessage("Are you sure you want to delete \"" + typeWithCategory.type.name + "\"?")
-                    .setPositiveButton("Yes", ((dialog, which) -> {
-                        typeViewModel.deleteType(typeWithCategory);
-                    }))
-                    .setNegativeButton("No", null)
-                    .show();
-        });
-    }
-
-    private void updateSpinner(List<Category> categories) {
-
-//        List<String> categoryNames = new ArrayList<>();
-//        for (Category c : categories) {
-//            categoryNames.add(c.name);
-//            Log.d("SpinnerDebug", "category" + categoryNames.toString());
-//        }
-
-        ArrayAdapter<Category> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
