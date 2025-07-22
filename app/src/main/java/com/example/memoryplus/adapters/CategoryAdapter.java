@@ -42,6 +42,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                 }
             }
         });
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onEditClick(item);
+                }
+            }
+        });
     }
 
     @Override
@@ -52,16 +60,19 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         ImageButton deleteButton;
+        ImageButton editButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.categoryText);
             deleteButton = itemView.findViewById(R.id.deleteCat);
+            editButton = itemView.findViewById(R.id.edit_cat);
         }
     }
 
     public interface OnCategoryClickListener {
         void onDeleteClick(Category category);
+        void onEditClick(Category category);
     }
 
     public void setOnCategoryClickListener (OnCategoryClickListener listener) {

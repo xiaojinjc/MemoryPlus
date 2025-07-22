@@ -52,16 +52,78 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
 //        TODO: night theme for alerts
-        adapter.setOnCategoryClickListener(category -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Delete Category")
-                    .setMessage("Are you sure you want to delete \"" + category.name + "\"?" +
-                            "\n\nThis will change all types related to "+ category.name + " to Uncategorized.")
-                    .setPositiveButton("Yes", ((dialog, which) -> {
-                        viewModel.deleteCategory(category);
-                    }))
-                    .setNegativeButton("No", null)
-                    .show();
+//        Alert dialog for deleting
+        adapter.setOnCategoryClickListener(new CategoryAdapter.OnCategoryClickListener() {
+            @Override
+            public void onDeleteClick(Category category) {
+                new AlertDialog.Builder(CategoryActivity.this)
+                        .setTitle("Delete Category")
+                        .setMessage("Are you sure you want to delete \"" + category.name + "\"?" +
+                                "\n\nThis will change all types related to "+ category.name + " to Uncategorized.")
+                        .setPositiveButton("Yes", ((dialog, which) -> {
+                            viewModel.deleteCategory(category);
+                        }))
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+
+            @Override
+            public void onEditClick(Category category) {
+                CategoryViewModel viewModel = new ViewModelProvider(CategoryActivity.this).get(CategoryViewModel.class);
+
+                View popupView = LayoutInflater.from(CategoryActivity.this).inflate(R.layout.popup_create_cat, null);
+                Context wrapper = new ContextThemeWrapper(CategoryActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
+                builder.setView(popupView);
+                builder.setTitle("Edit Category");
+
+                EditText categoryInput = popupView.findViewById(R.id.categoryInput);
+                categoryInput.setText(category.name);
+
+                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String catName = categoryInput.getText().toString().trim();
+                        List<Category> currentList = viewModel.getAllCategories().getValue();
+
+                        if (catName.isEmpty()) {
+                            Toast.makeText(CategoryActivity.this, "Category name can't be empty.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (catName.length() > 30) {
+                            Toast.makeText(CategoryActivity.this, "Category name can't exceed 30 characters.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (currentList != null) {
+                            boolean duplicate = false;
+                            for (Category c : currentList) {
+                                if (c.name.equalsIgnoreCase(catName)) {
+                                    duplicate = true;
+                                    break;
+                                }
+                            }
+
+                            if (duplicate) {
+                                Toast.makeText(CategoryActivity.this, "Category " + catName + " already exists.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        category.name = catName;
+                        viewModel.updateCategory(category);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
     }
 
@@ -72,7 +134,7 @@ public class CategoryActivity extends AppCompatActivity {
         builder.setView(popupView);
         builder.setTitle("Create Category");
 
-        EditText categoryInput = findViewById(R.id.categoryInput);
+        EditText categoryInput = popupView.findViewById(R.id.categoryInput);
 
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override

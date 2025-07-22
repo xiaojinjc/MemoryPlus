@@ -33,7 +33,9 @@ public class CategoryRepository {
     }
 
     public void update(Category category) {
-        new Thread(() -> categoryDao.update(category)).start();
+        executor.execute(() -> {
+            categoryDao.update(category);
+        });
     }
 
     public void delete(Category category) {
