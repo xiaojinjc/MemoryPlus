@@ -9,6 +9,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.memoryplus.MonthFragment;
 
+import java.time.YearMonth;
+
 public class MonthPagerAdapter extends FragmentStateAdapter {
     private final int startYear = 2024;
     private final int startMonth = 1;
@@ -35,5 +37,9 @@ public class MonthPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return pageCount;
+    }
+
+    public YearMonth getYearMonthAt(int position) {
+        return YearMonth.of(startYear, startMonth).plusMonths(position);
     }
 }

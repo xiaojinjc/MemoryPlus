@@ -32,10 +32,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -58,16 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        RecyclerView recyclerView = findViewById(R.id.entryRecyclerView);
-//        adapter = new EntryGroupedAdapter();
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        entryViewModel = new ViewModelProvider(this).get(EntryViewModel.class);
-//
-//        entryViewModel.getGroupedItems().observe(this, groupedItems -> {
-//            adapter.setItems(groupedItems);
-//        });
+        TextView monthDisplay = findViewById(R.id.month_display);
 
         ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
         MonthPagerAdapter pagerAdapter = new MonthPagerAdapter(this);
@@ -80,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
         LocalDate today = LocalDate.now();
         int monthsSinceStart = (today.getYear() - startYear) * 12 + (today.getMonthValue() - startMonth);
         monthViewPager.setCurrentItem(monthsSinceStart, false);
+
+        YearMonth ym = pagerAdapter.getYearMonthAt(monthsSinceStart);
+        String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
+        monthDisplay.setText(display);
+
+        monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                YearMonth ym = pagerAdapter.getYearMonthAt(position);
+                String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
+                monthDisplay.setText(display);
+            }
+        });
 
 
 //        Open popup menu
@@ -155,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
                 int defaultMonth = calendar.get(Calendar.MONTH);
                 int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, 0,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+//                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         (view, selectedYear, selectedMonth, selectedDay) -> {
                             calendar.set(Calendar.YEAR, selectedYear);
                             calendar.set(Calendar.MONTH, selectedMonth);
