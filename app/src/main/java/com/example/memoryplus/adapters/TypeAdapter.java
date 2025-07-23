@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.R;
 import com.example.memoryplus.entities.TypeWithCategory;
+import com.example.memoryplus.entities.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,15 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
             }
         });
 
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onUpdateClick(item.type);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -57,17 +67,20 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.MyViewHolder>{
         TextView text;
         TextView catText;
         ImageButton deleteButton;
+        ImageButton editButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             text = itemView.findViewById(R.id.typeText);
             catText = itemView.findViewById(R.id.typeCatText);
             deleteButton = itemView.findViewById(R.id.deleteType);
+            editButton = itemView.findViewById(R.id.edit_type);
         }
     }
 
     public interface OnTypeClickListener {
         void onDeleteClick(TypeWithCategory typeWithCategory);
+        void onUpdateClick(Type type);
     }
 
     public void setOnTypeClickListener (TypeAdapter.OnTypeClickListener listener) {

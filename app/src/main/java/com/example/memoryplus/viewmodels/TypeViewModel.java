@@ -38,5 +38,9 @@ public class TypeViewModel extends AndroidViewModel {
         repository.delete(typeWithCategory);
     }
 
+    public void updateType(Type type) {
+        repository.update(type);
+    }
+
 //    TODO: add method for getTypeListByCat, Livedata?
 }

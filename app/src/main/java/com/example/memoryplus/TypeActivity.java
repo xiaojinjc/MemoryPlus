@@ -56,16 +56,100 @@ public class TypeActivity extends AppCompatActivity {
             }
         });
 
+        adapter.setOnTypeClickListener(new TypeAdapter.OnTypeClickListener() {
+            @Override
+            public void onDeleteClick(TypeWithCategory typeWithCategory) {
+                new AlertDialog.Builder(TypeActivity.this)
+                        .setTitle("Delete Category")
+                        .setMessage("Are you sure you want to delete \"" + typeWithCategory.type.name + "\"?")
+                        .setPositiveButton("Yes", ((dialog, which) -> {
+                            typeViewModel.deleteType(typeWithCategory);
+                        }))
+                        .setNegativeButton("No", null)
+                        .show();
+            }
 
-        adapter.setOnTypeClickListener(typeWithCategory -> {
-            new AlertDialog.Builder(this)
-                    .setTitle("Delete Category")
-                    .setMessage("Are you sure you want to delete \"" + typeWithCategory.type.name + "\"?")
-                    .setPositiveButton("Yes", ((dialog, which) -> {
-                        typeViewModel.deleteType(typeWithCategory);
-                    }))
-                    .setNegativeButton("No", null)
-                    .show();
+            @Override
+            public void onUpdateClick(Type type) {
+                TypeViewModel typeViewModel = new ViewModelProvider(TypeActivity.this).get(TypeViewModel.class);
+                CategoryViewModel catViewModel = new ViewModelProvider(TypeActivity.this).get(CategoryViewModel.class);
+
+                View popupView = LayoutInflater.from(TypeActivity.this).inflate(R.layout.popup_create_type, null);
+                Context wrapper = new ContextThemeWrapper(TypeActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
+                builder.setView(popupView);
+                builder.setTitle("Create Type");
+
+                EditText typeInput = popupView.findViewById(R.id.typeInput);
+                Spinner spinner = popupView.findViewById(R.id.popup_cat_type_spinner);
+
+                typeInput.setText(type.name);
+
+                catViewModel.getAllCategories().observe(TypeActivity.this, categories -> {
+                    Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
+                    ArrayAdapter<Category> adapter = new ArrayAdapter<>(TypeActivity.this, android.R.layout.simple_spinner_dropdown_item, categories);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinner.setAdapter(adapter);
+
+//                    Find the index of the category id that matches the type being edited, and set it
+                    int selectedIndex = 0;
+                    for (int i = 0; i < categories.size(); i++) {
+                        if (categories.get(i).id == type.categoryId) {
+                            selectedIndex = i;
+                            break;
+                        }
+                    }
+
+                    spinner.setSelection(selectedIndex);
+                });
+
+                builder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        String typeName = typeInput.getText().toString().trim();
+                        List<TypeWithCategory> currentList = typeViewModel.getAllTypesWithCategories().getValue();
+
+//                Validation
+                        if (spinner.getSelectedItem() == null){
+                            Toast.makeText(TypeActivity.this, "No category has been selected.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (typeName.isEmpty()){
+                            Toast.makeText(TypeActivity.this, "Type name can't be empty.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        Category cat = (Category) spinner.getSelectedItem();
+
+                        Log.d("AddType", "currentList size: " + (currentList == null ? "null" : currentList.size()));
+                        if (currentList != null){
+                            Log.d("AddType", "enter main if");
+                            boolean duplicate = false;
+                            for (TypeWithCategory t : currentList) {
+                                if (t.type.name.equalsIgnoreCase(typeName) && t.category.id == cat.id){
+                                    duplicate = true;
+                                    Log.d("AddType", "duplicate found");
+                                    break;
+                                }
+                            }
+
+                            if (duplicate) {
+                                Log.d("AddType", "reach duplicate if");
+                                Toast.makeText(TypeActivity.this, "No duplicate types of the same category can be added.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+
+                        type.name = typeName;
+                        type.categoryId = cat.id;
+                        typeViewModel.updateType(type);
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
     }
 
