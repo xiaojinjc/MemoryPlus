@@ -159,7 +159,7 @@ public class TypeActivity extends AppCompatActivity {
 
         View popupView = LayoutInflater.from(TypeActivity.this).inflate(R.layout.popup_create_type, null);
         Context wrapper = new ContextThemeWrapper(TypeActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
+        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
         builder.setView(popupView);
         builder.setTitle("Create Type");
 

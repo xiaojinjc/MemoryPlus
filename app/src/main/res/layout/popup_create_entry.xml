@@ -27,7 +27,9 @@
             android:id="@+id/popup_date_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="dd/mm/yyyy"
+            android:hint="Select Date"
+            android:focusable="false"
+            android:clickable="true"
             />
     </LinearLayout>
 

@@ -17,6 +17,7 @@ import com.example.memoryplus.viewmodels.EntryViewModel_2;
 import com.example.memoryplus.viewmodels.TypeViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,9 +34,12 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -139,6 +143,34 @@ public class MainActivity extends AppCompatActivity {
         CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
         EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
 
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        dateInput.setText(sdf.format(calendar.getTime()));
+
+//        Show date picker dialog
+        dateInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int defaultYear = calendar.get(Calendar.YEAR);
+                int defaultMonth = calendar.get(Calendar.MONTH);
+                int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this, 0,
+                        (view, selectedYear, selectedMonth, selectedDay) -> {
+                            calendar.set(Calendar.YEAR, selectedYear);
+                            calendar.set(Calendar.MONTH, selectedMonth);
+                            calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+
+                            dateInput.setText(sdf.format(calendar.getTime()));
+                      },
+                    defaultYear, defaultMonth, defaultDay
+                );
+                datePickerDialog.show();
+            }
+        });
+
+
+//        Show categories on spinner
         categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
             List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
             Category temp = new Category("Any");
@@ -150,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
             catInput.setAdapter(catAdapter);
         });
 
+//        show type on spinner, show filtered if needed
         typeViewModel.getAllTypes().observe(this, types -> {
             List<Type> allTypes = new ArrayList<>(types);
 
