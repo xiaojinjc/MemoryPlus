@@ -27,7 +27,10 @@
             android:id="@+id/typeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Category Name"
+            android:hint="Enter Type Name"
+            android:maxLines="1"
+            android:inputType="text"
+            android:imeOptions="actionDone"
             />
     </LinearLayout>
 

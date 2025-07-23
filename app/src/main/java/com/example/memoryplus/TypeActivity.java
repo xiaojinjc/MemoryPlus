@@ -70,30 +70,31 @@ public class TypeActivity extends AppCompatActivity {
     }
 
     private void showCreateCatPopup() {
+        TypeViewModel typeViewModel = new ViewModelProvider(TypeActivity.this).get(TypeViewModel.class);
+        CategoryViewModel catViewModel = new ViewModelProvider(TypeActivity.this).get(CategoryViewModel.class);
+
         View popupView = LayoutInflater.from(TypeActivity.this).inflate(R.layout.popup_create_type, null);
         Context wrapper = new ContextThemeWrapper(TypeActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(wrapper);
         builder.setView(popupView);
         builder.setTitle("Create Type");
 
-        EditText typeInput = findViewById(R.id.typeInput);
-        Spinner spinner = findViewById(R.id.popup_cat_type_spinner);
+        EditText typeInput = popupView.findViewById(R.id.typeInput);
+        Spinner spinner = popupView.findViewById(R.id.popup_cat_type_spinner);
+
+        catViewModel.getAllCategories().observe(TypeActivity.this, categories -> {
+            Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
+            ArrayAdapter<Category> adapter = new ArrayAdapter<>(TypeActivity.this, android.R.layout.simple_spinner_dropdown_item, categories);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+        });
 
         builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                TypeViewModel typeViewModel = new ViewModelProvider(TypeActivity.this).get(TypeViewModel.class);
-                CategoryViewModel catViewModel = new ViewModelProvider(TypeActivity.this).get(CategoryViewModel.class);
 
                 String typeName = typeInput.getText().toString().trim();
                 List<TypeWithCategory> currentList = typeViewModel.getAllTypesWithCategories().getValue();
-
-                catViewModel.getAllCategories().observe(TypeActivity.this, categories -> {
-                    Log.d("SpinnerDebug", "Observed " + categories.size() + " categories");
-                    ArrayAdapter<Category> adapter = new ArrayAdapter<>(TypeActivity.this, android.R.layout.simple_spinner_dropdown_item, categories);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapter);
-                });
 
 //                Validation
                 if (spinner.getSelectedItem() == null){
