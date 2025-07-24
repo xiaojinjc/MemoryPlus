@@ -41,6 +41,10 @@ public class EntryViewModel_2 extends AndroidViewModel {
         repository.delete(entry);
     }
 
+    public void updateEntry(EntryDB entry) {
+        repository.update(entry);
+    }
+
     public LiveData<List<EntryDB>> getAllLive() {
         return repository.getAllLive();
     }

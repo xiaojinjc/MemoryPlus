@@ -1,5 +1,6 @@
 package com.example.memoryplus;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -64,11 +65,11 @@ public class MonthFragment extends Fragment {
 
         entryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel_2.class);
 
-        entryViewModel.getAllLive().observe(getViewLifecycleOwner(), list -> {
-            for (EntryDB e : list){
-                Log.d("Debug", "Entry: " + e.description + ", date: " + e.date);
-            }
-        });
+//        entryViewModel.getAllLive().observe(getViewLifecycleOwner(), list -> {
+//            for (EntryDB e : list){
+//                Log.d("Debug", "Entry: " + e.description + ", date: " + e.date);
+//            }
+//        });
 
         entryViewModel.getEntriesWithTypeForMonth(year, month)
                 .observe(getViewLifecycleOwner(), entryWithTypes -> {
@@ -76,6 +77,10 @@ public class MonthFragment extends Fragment {
                     List<ListItem> grouped = groupEntriesByDate(entryWithTypes);
                     adapter.setItems(grouped);
                 });
+
+        adapter.setOnEntryClickListener(entryDB -> {
+            showEntryOptionPopup(entryDB);
+        });
     }
 
     public List<ListItem> groupEntriesByDate(List<EntryWithType> entriesWithType) {
@@ -96,5 +101,19 @@ public class MonthFragment extends Fragment {
         }
 
         return result;
+    }
+
+    public void showEntryOptionPopup(EntryWithType entryWithType) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Options")
+                .setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
+                    if (which == 0){
+                        MainActivity ma = new MainActivity();
+                        ma.showCreatePopup(entryWithType);
+                    } else if (which == 1) {
+                        entryViewModel.deleteEntry(entryWithType.entryDB);
+                    }
+                })
+                .show();
     }
 }

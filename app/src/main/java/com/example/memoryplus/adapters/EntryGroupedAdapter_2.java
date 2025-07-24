@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.R;
-import com.example.memoryplus.entities.EntryDB;
 import com.example.memoryplus.entities.EntryWithType;
-import com.example.memoryplus.entities.Type;
-import com.example.memoryplus.entities.TypeWithCategory;
 import com.example.memoryplus.items.EntryItem;
 import com.example.memoryplus.items.HeaderItem;
 import com.example.memoryplus.items.ListItem;
@@ -24,7 +21,7 @@ import java.util.List;
 
 public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ListItem> items = new ArrayList<>();
-//    private EntryGroupedAdapter_2.OnEntryClickListener listener;
+    private EntryGroupedAdapter_2.OnEntryClickListener listener;
 
     public void setItems(List<ListItem> items) {
         this.items = items;
@@ -82,6 +79,12 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
                     notifyItemChanged(position);
                 }
             });
+            holder.itemView.setOnLongClickListener(v -> {
+                if (listener != null) {
+                    listener.onEntryLongClick(entryWithType);
+                }
+                return true;
+            });
         }
     }
 
@@ -118,12 +121,11 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-//    public interface OnEntryClickListener {
-//        void onDeleteLongClick(EntryWithType entryWithType);
-////        void onUpdateClick(Type type);
-//    }
-//
-//    public void setOnTypeClickListener (EntryGroupedAdapter_2.OnEntryClickListener listener) {
-//        this.listener = listener;
-//    }
+    public interface OnEntryClickListener {
+        void onEntryLongClick(EntryWithType entryDB);
+    }
+
+    public void setOnEntryClickListener (EntryGroupedAdapter_2.OnEntryClickListener listener) {
+        this.listener = listener;
+    }
 }

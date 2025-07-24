@@ -1,5 +1,6 @@
 package com.example.memoryplus;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCreatePopup();
+                showCreatePopup(null);
             }
         });
 
@@ -192,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
         settingPopup.show();
     }
 
-    private void showCreatePopup() {
+//    Optional parameter, if there is it means its edit mode
+    public void showCreatePopup(@Nullable EntryWithType existingEntry) {
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
 
@@ -283,6 +286,15 @@ public class MainActivity extends AppCompatActivity {
             });
         });
 
+//        prefill values if editing
+        if (existingEntry != null){
+            dateInput.setText(existingEntry.entryDB.date);
+            descInput.setText(existingEntry.entryDB.description);
+            partInput.setText(existingEntry.entryDB.part);
+            completeInput.setActivated(existingEntry.entryDB.isComplete);
+            notesInput.setText(existingEntry.entryDB.notes);
+        }
+
         builder.setPositiveButton("Created", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -298,7 +310,14 @@ public class MainActivity extends AppCompatActivity {
 //                TODO: Add validation for createEntry
 
                 EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
-                entryViewModel.insertEntry(newEntry);
+                if (existingEntry != null) {
+                    newEntry.id = existingEntry.entryDB.id;
+                    entryViewModel.updateEntry(newEntry);
+                }
+                else {
+                    entryViewModel.insertEntry(newEntry);
+                }
+
             }
         });
 
