@@ -11,7 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoryplus.R;
+import com.example.memoryplus.entities.EntryDB;
 import com.example.memoryplus.entities.EntryWithType;
+import com.example.memoryplus.entities.Type;
+import com.example.memoryplus.entities.TypeWithCategory;
 import com.example.memoryplus.items.EntryItem;
 import com.example.memoryplus.items.HeaderItem;
 import com.example.memoryplus.items.ListItem;
@@ -21,6 +24,7 @@ import java.util.List;
 
 public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<ListItem> items = new ArrayList<>();
+//    private EntryGroupedAdapter_2.OnEntryClickListener listener;
 
     public void setItems(List<ListItem> items) {
         this.items = items;
@@ -56,14 +60,28 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
             EntryItem tempEntry = (EntryItem) item;
             EntryWithType entryWithType = tempEntry.entryWithType;
             String line = entryWithType.type.name + " " + entryWithType.entryDB.description;
+            boolean hasNotes = entryWithType.entryDB.notes != null && !entryWithType.entryDB.notes.trim().isEmpty();
             if (entryWithType.entryDB.isComplete){
                 line += " Complete";
             } else if (entryWithType.entryDB.part != null) {
 //                TODO: make parts automatic?
                 line += " " + entryWithType.entryDB.part;
             }
+            if (hasNotes) {
+                // ▼ or ▶
+                line += tempEntry.isExpanded ? "  \u25BC" : "  \u25B6";
+            }
             Log.d("EntryAdapter", "desc: " + entryWithType.entryDB.description);
             ((EntryViewHolder) holder).entryText.setText(line);
+            ((EntryViewHolder) holder).notesText.setText(entryWithType.entryDB.notes);
+            ((EntryViewHolder) holder).notesText.setVisibility(tempEntry.isExpanded ? View.VISIBLE : View.GONE);
+
+            holder.itemView.setOnClickListener(v -> {
+                if (hasNotes) {
+                    tempEntry.isExpanded = !tempEntry.isExpanded;
+                    notifyItemChanged(position);
+                }
+            });
         }
     }
 
@@ -91,10 +109,21 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
 
     public static class EntryViewHolder extends RecyclerView.ViewHolder {
         TextView entryText;
+        TextView notesText;
 
         EntryViewHolder(View itemView) {
             super(itemView);
             entryText = itemView.findViewById(R.id.text_entry_line);
+            notesText = itemView.findViewById(R.id.notes_entry_line);
         }
     }
+
+//    public interface OnEntryClickListener {
+//        void onDeleteLongClick(EntryWithType entryWithType);
+////        void onUpdateClick(Type type);
+//    }
+//
+//    public void setOnTypeClickListener (EntryGroupedAdapter_2.OnEntryClickListener listener) {
+//        this.listener = listener;
+//    }
 }

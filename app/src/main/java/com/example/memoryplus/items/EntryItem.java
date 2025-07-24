@@ -5,6 +5,7 @@ import com.example.memoryplus.entities.EntryWithType;
 
 public class EntryItem implements ListItem {
     public final EntryWithType entryWithType;
+    public boolean isExpanded = false;
 
     public EntryItem(EntryWithType entry) {
         this.entryWithType = entry;

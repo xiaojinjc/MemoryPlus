@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MonthPagerAdapter extends FragmentStateAdapter {
-//    private final int startYear = 2024;
-//    private final int startMonth = 1;
-//    private final int pageCount = 24;
     private List<YearMonth> months = new ArrayList<>();
 
     public MonthPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -53,7 +50,4 @@ public class MonthPagerAdapter extends FragmentStateAdapter {
         return months;
     }
 
-//    public YearMonth getYearMonthAt(int position) {
-//        return YearMonth.of(startYear, startMonth).plusMonths(position);
-//    }
 }
