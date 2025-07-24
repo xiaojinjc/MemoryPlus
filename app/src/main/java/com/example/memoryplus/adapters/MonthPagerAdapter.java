@@ -10,36 +10,46 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.memoryplus.MonthFragment;
 
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MonthPagerAdapter extends FragmentStateAdapter {
-    private final int startYear = 2024;
-    private final int startMonth = 1;
-    private final int pageCount = 24;
+//    private final int startYear = 2024;
+//    private final int startMonth = 1;
+//    private final int pageCount = 24;
+    private List<YearMonth> months = new ArrayList<>();
 
     public MonthPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
+    public void setMonths(List<YearMonth> months) {
+        this.months = months;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        int year = startYear + (startMonth + position - 1) / 12;
-        int month = (startMonth + position - 1)  % 12 + 1;
-
-        MonthFragment fragment = new MonthFragment();
-        Bundle args = new Bundle();
-        args.putInt("year", year);
-        args.putInt("month", month);
-        fragment.setArguments(args);
-        return fragment;
+//        int year = startYear + (startMonth + position - 1) / 12;
+//        int month = (startMonth + position - 1)  % 12 + 1;
+//
+//        MonthFragment fragment = new MonthFragment();
+//        Bundle args = new Bundle();
+//        args.putInt("year", year);
+//        args.putInt("month", month);
+//        fragment.setArguments(args);
+//        return fragment;
+        YearMonth ym = months.get(position);
+        return MonthFragment.newInstance(ym.getYear(), ym.getMonthValue());
     }
 
     @Override
     public int getItemCount() {
-        return pageCount;
+        return months.size();
     }
 
-    public YearMonth getYearMonthAt(int position) {
-        return YearMonth.of(startYear, startMonth).plusMonths(position);
-    }
+//    public YearMonth getYearMonthAt(int position) {
+//        return YearMonth.of(startYear, startMonth).plusMonths(position);
+//    }
 }

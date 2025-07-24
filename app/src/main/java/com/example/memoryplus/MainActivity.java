@@ -10,6 +10,7 @@ import com.example.memoryplus.adapters.EntryGroupedAdapter;
 import com.example.memoryplus.adapters.MonthPagerAdapter;
 import com.example.memoryplus.entities.Category;
 import com.example.memoryplus.entities.EntryDB;
+import com.example.memoryplus.entities.EntryWithType;
 import com.example.memoryplus.entities.Type;
 import com.example.memoryplus.viewmodels.CategoryViewModel;
 import com.example.memoryplus.viewmodels.EntryViewModel;
@@ -38,12 +39,16 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,32 +67,66 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        TODO: UNDERSTAND THIS
+        EntryViewModel_2  viewModel = new ViewModelProvider(this).get(EntryViewModel_2.class);
+
         TextView monthDisplay = findViewById(R.id.month_display);
 
         ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
         MonthPagerAdapter pagerAdapter = new MonthPagerAdapter(this);
         monthViewPager.setAdapter(pagerAdapter);
 
-        // Optional: Set current page to current month
-        int startYear = 2024;
-        int startMonth = 1;
+        List<YearMonth> currentMonths = new ArrayList<>();
+        viewModel.getAllEntriesWithTypes().observe(this, entryWithTypes -> {
+            if (entryWithTypes == null) return;
 
-        LocalDate today = LocalDate.now();
-        int monthsSinceStart = (today.getYear() - startYear) * 12 + (today.getMonthValue() - startMonth);
-        monthViewPager.setCurrentItem(monthsSinceStart, false);
+            Set<YearMonth> monthSet = new TreeSet<>();
+            for (EntryWithType e : entryWithTypes) {
+                try {
+                    LocalDate date = LocalDate.parse(e.entryDB.date);
+                    monthSet.add(YearMonth.from(date));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
 
-        YearMonth ym = pagerAdapter.getYearMonthAt(monthsSinceStart);
-        String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
-        monthDisplay.setText(display);
+            List<YearMonth> newMonths = new ArrayList<>(monthSet);
 
-        monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                YearMonth ym = pagerAdapter.getYearMonthAt(position);
-                String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
-                monthDisplay.setText(display);
+            // Only update the adapter if the months list has changed
+            if (!newMonths.equals(currentMonths)) {
+                currentMonths.clear();
+                currentMonths.addAll(newMonths);
+                pagerAdapter.setMonths(newMonths);
+
+                // Optionally scroll to the new entry’s month (if desired)
+                YearMonth today = YearMonth.now();
+                int currentIndex = newMonths.indexOf(today);
+                if (currentIndex >= 0) {
+                    monthViewPager.setCurrentItem(currentIndex, false);
+                }
             }
         });
+
+        // Optional: Set current page to current month
+//        int startYear = 2024;
+//        int startMonth = 1;
+//
+//        LocalDate today = LocalDate.now();
+//        int monthsSinceStart = (today.getYear() - startYear) * 12 + (today.getMonthValue() - startMonth);
+//        monthViewPager.setCurrentItem(monthsSinceStart, false);
+//
+//        YearMonth ym = pagerAdapter.getYearMonthAt(monthsSinceStart);
+//        String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
+//        monthDisplay.setText(display);
+//
+//        monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                YearMonth ym = pagerAdapter.getYearMonthAt(position);
+//                String display = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
+//                monthDisplay.setText(display);
+//            }
+//        });
 
 
 //        Open popup menu
