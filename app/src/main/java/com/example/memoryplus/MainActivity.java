@@ -99,11 +99,19 @@ public class MainActivity extends AppCompatActivity {
                 pagerAdapter.setMonths(newMonths);
 
                 // Optionally scroll to the new entry’s month (if desired)
-                YearMonth today = YearMonth.now();
-                int currentIndex = newMonths.indexOf(today);
-                if (currentIndex >= 0) {
-                    monthViewPager.setCurrentItem(currentIndex, false);
-                }
+//                YearMonth today = YearMonth.now();
+//                int currentIndex = newMonths.indexOf(today);
+//                if (currentIndex >= 0) {
+//                    monthViewPager.setCurrentItem(currentIndex, false);
+//                }
+            }
+        });
+
+        monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                updateMonthText(monthDisplay, pagerAdapter.getMonths(), monthViewPager.getCurrentItem());
             }
         });
 
@@ -148,6 +156,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+//    TODO: understand this as well
+    private void updateMonthText(TextView monthDisplay, List<YearMonth> months, int position) {
+        if (position >= 0 && position < months.size()) {
+            YearMonth ym = months.get(position);
+            String formatted = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
+            monthDisplay.setText(formatted);
+        } else {
+            monthDisplay.setText("");
+        }
+    }
+
 
     private void showMenuPopup() {
         Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);

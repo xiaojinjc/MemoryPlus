@@ -49,6 +49,10 @@ public class MonthPagerAdapter extends FragmentStateAdapter {
         return months.size();
     }
 
+    public List<YearMonth> getMonths() {
+        return months;
+    }
+
 //    public YearMonth getYearMonthAt(int position) {
 //        return YearMonth.of(startYear, startMonth).plusMonths(position);
 //    }
