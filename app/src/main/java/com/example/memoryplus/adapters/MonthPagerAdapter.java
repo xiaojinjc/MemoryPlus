@@ -14,14 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MonthPagerAdapter extends FragmentStateAdapter {
-    private List<YearMonth> months = new ArrayList<>();
+    private int selectedYear;
 
-    public MonthPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public MonthPagerAdapter(@NonNull FragmentActivity fragmentActivity, int selectedYear) {
         super(fragmentActivity);
+        this.selectedYear = selectedYear;
     }
 
-    public void setMonths(List<YearMonth> months) {
-        this.months = months;
+    public void setYear(int year) {
+        this.selectedYear = year;
         notifyDataSetChanged();
     }
 
@@ -37,17 +38,17 @@ public class MonthPagerAdapter extends FragmentStateAdapter {
 //        args.putInt("month", month);
 //        fragment.setArguments(args);
 //        return fragment;
-        YearMonth ym = months.get(position);
-        return MonthFragment.newInstance(ym.getYear(), ym.getMonthValue());
+
+//        YearMonth ym = months.get(position);
+//        return MonthFragment.newInstance(ym.getYear(), ym.getMonthValue());
+
+        int month = position + 1;
+        return MonthFragment.newInstance(selectedYear, month);
     }
 
     @Override
     public int getItemCount() {
-        return months.size();
+//        return months.size();
+        return 12;
     }
-
-    public List<YearMonth> getMonths() {
-        return months;
-    }
-
 }

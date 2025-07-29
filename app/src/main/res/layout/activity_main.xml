@@ -28,7 +28,7 @@
 
                 <!-- Left side: EditText (search or text input) -->
                 <TextView
-                    android:id="@+id/toolbarEditText"
+                    android:id="@+id/toolbarYearText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

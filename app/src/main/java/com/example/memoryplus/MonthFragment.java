@@ -108,7 +108,7 @@ public class MonthFragment extends Fragment {
                 .setTitle("Options")
                 .setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
                     if (which == 0){
-                        MainActivity ma = new MainActivity();
+                        MainActivity ma = (MainActivity) requireActivity();
                         ma.showCreatePopup(entryWithType);
                     } else if (which == 1) {
                         entryViewModel.deleteEntry(entryWithType.entryDB);
