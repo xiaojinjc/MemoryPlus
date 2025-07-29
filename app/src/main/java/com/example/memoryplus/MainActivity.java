@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         TextView yearDisplay = findViewById(R.id.toolbarYearText);
         TextView monthDisplay = findViewById(R.id.month_display);
         ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
+        String[] monthNames = {
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+        };
+
 
         int[] currentYear = {LocalDate.now().getYear()};
         yearDisplay.setText(String.valueOf(currentYear[0]));
@@ -82,6 +87,37 @@ public class MainActivity extends AppCompatActivity {
         monthViewPager.setAdapter(monthPagerAdapter);
 
         monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
+
+        monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                // position is 0 for Jan, 1 for Feb, ..., 11 for Dec
+                String selectedMonth = monthNames[position];
+
+                // Get year from the top-left TextView
+                String yearText = yearDisplay.getText().toString();
+                int selectedYear = 2025; // fallback
+
+                try {
+                    selectedYear = Integer.parseInt(yearText);
+                } catch (NumberFormatException e) {
+                    Log.e("MonthDisplay", "Invalid year format: " + yearText);
+                }
+
+                // Update the month display
+                String label = selectedMonth + " " + selectedYear;
+                monthDisplay.setText(label);
+            }
+        });
+
+        int initialPage = monthViewPager.getCurrentItem();
+        monthViewPager.post(() -> {
+            monthViewPager.setCurrentItem(initialPage, false);
+            monthDisplay.setText(monthNames[initialPage] + " " + yearDisplay.getText().toString());
+        });
+
 
 
 //        Open popup menu
