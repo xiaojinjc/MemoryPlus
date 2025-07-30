@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +36,13 @@ public class CreateEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
 
+        Intent intent = getIntent();
+        boolean isEdit = intent.getBooleanExtra("isEdit", false);
+
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
+
+        TextView createTitle = findViewById(R.id.create_title);
 
         EditText dateInput = findViewById(R.id.popup_date_field);
         Spinner typeInput = findViewById(R.id.popup_type_spinner);
@@ -46,7 +52,7 @@ public class CreateEntryActivity extends AppCompatActivity {
         CheckBox completeInput = findViewById(R.id.popup_complete_field);
         EditText notesInput = findViewById(R.id.popup_notes_field);
 
-        Button create = findViewById(R.id.create_entry_button);
+        Button createEdit = findViewById(R.id.create_entry_button);
         Button cancel = findViewById(R.id.cancel_entry_button);
 
         Calendar calendar = Calendar.getInstance();
@@ -91,6 +97,18 @@ public class CreateEntryActivity extends AppCompatActivity {
 
 //        show type on spinner, show filtered if needed
         typeViewModel.getAllTypes().observe(this, types -> {
+            int typeIndex = -1;
+            for (int i = 0; i < types.size(); i++) {
+                if (types.get(i).id == intent.getIntExtra("typeId", -1)){
+                    typeIndex = i;
+                    break;
+                }
+            }
+
+            if (typeIndex >= 0) {
+                typeInput.setSelection(typeIndex);
+            }
+
             List<Type> allTypes = new ArrayList<>(types);
 
             catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -122,7 +140,17 @@ public class CreateEntryActivity extends AppCompatActivity {
             });
         });
 
-        create.setOnClickListener(new View.OnClickListener() {
+        if (isEdit) {
+            createTitle.setText("Edit Entry");
+            createEdit.setText("Edit");
+            dateInput.setText(intent.getStringExtra("date"));
+            descInput.setText(intent.getStringExtra("description"));
+            notesInput.setText(intent.getStringExtra("notes"));
+            partInput.setText(intent.getStringExtra("part"));
+            completeInput.setChecked(intent.getBooleanExtra("isComplete", false));
+        }
+
+        createEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EntryViewModel_2 entryViewModel = new ViewModelProvider(CreateEntryActivity.this).get(EntryViewModel_2.class);
@@ -137,17 +165,24 @@ public class CreateEntryActivity extends AppCompatActivity {
 //                TODO: add validation
 
                 EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
-                entryViewModel.insertEntry(newEntry);
-                startActivity(new Intent(CreateEntryActivity.this, MainActivity.class));
+                if (isEdit) {
+                    newEntry.id = intent.getIntExtra("entryId",-1);
+                    entryViewModel.updateEntry(newEntry);
+                } else {
+                    entryViewModel.insertEntry(newEntry);
+                }
+                finish();
             }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreateEntryActivity.this, MainActivity.class));
+                finish();
             }
         });
 
     }
+
+//    (Optional) Returning to the Previous Activity with Result
 }

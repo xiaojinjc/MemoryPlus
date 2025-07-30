@@ -19,10 +19,11 @@
             android:background="@color/black">
 
             <TextView
+                android:id="@+id/create_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Create Entry"
-                android:textSize="28dp"/>
+                android:textSize="28dp" />
 
         </Toolbar>
 

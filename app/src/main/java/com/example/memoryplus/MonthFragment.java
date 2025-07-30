@@ -1,6 +1,7 @@
 package com.example.memoryplus;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,9 +110,18 @@ public class MonthFragment extends Fragment {
                 .setTitle("Options")
                 .setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
                     if (which == 0){
-//                        MainActivity ma = (MainActivity) requireActivity();
-//                        ma.showCreatePopup(entryWithType);
-                        Toast.makeText(getContext(),"WHATT", Toast.LENGTH_SHORT).show();
+//                        Or try with just entryID, and get it with query
+                        EntryDB temp = entryWithType.entryDB;
+                        Intent intent = new Intent(requireContext(), CreateEntryActivity.class);
+                        intent.putExtra("isEdit", true);
+                        intent.putExtra("entryId", temp.id);
+                        intent.putExtra("date", temp.date);
+                        intent.putExtra("typeId", temp.typeId);
+                        intent.putExtra("description", temp.description);
+                        intent.putExtra("part", temp.part);
+                        intent.putExtra("notes", temp.notes);
+                        intent.putExtra("isComplete", temp.isComplete);
+                        startActivity(intent);
                     } else if (which == 1) {
                         entryViewModel.deleteEntry(entryWithType.entryDB);
                     }
