@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,8 +109,9 @@ public class MonthFragment extends Fragment {
                 .setTitle("Options")
                 .setItems(new CharSequence[]{"Edit", "Delete"}, (dialog, which) -> {
                     if (which == 0){
-                        MainActivity ma = (MainActivity) requireActivity();
-                        ma.showCreatePopup(entryWithType);
+//                        MainActivity ma = (MainActivity) requireActivity();
+//                        ma.showCreatePopup(entryWithType);
+                        Toast.makeText(getContext(),"WHATT", Toast.LENGTH_SHORT).show();
                     } else if (which == 1) {
                         entryViewModel.deleteEntry(entryWithType.entryDB);
                     }

@@ -134,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCreatePopup(null);
+//                showCreatePopup(null);
+                startActivity(new Intent(MainActivity.this, CreateEntryActivity.class));
             }
         });
 
@@ -176,140 +177,140 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    Optional parameter, if there is it means its edit mode
-    public void showCreatePopup(@Nullable EntryWithType existingEntry) {
-        CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-        TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
-
-        View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_create_entry, null);
-        Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
-        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
-        builder.setView(popupView);
-        builder.setMessage("Create Entry");
-
-        EditText dateInput = popupView.findViewById(R.id.popup_date_field);
-        Spinner typeInput = popupView.findViewById(R.id.popup_type_spinner);
-        Spinner catInput = popupView.findViewById(R.id.popup_category_spinner);
-        EditText descInput = popupView.findViewById(R.id.popup_description_field);
-        EditText partInput = popupView.findViewById(R.id.popup_part_field);
-        CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
-        EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        dateInput.setText(sdf.format(calendar.getTime()));
-
-//        Show date picker dialog
-        dateInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int defaultYear = calendar.get(Calendar.YEAR);
-                int defaultMonth = calendar.get(Calendar.MONTH);
-                int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
-//                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-                        (view, selectedYear, selectedMonth, selectedDay) -> {
-                            calendar.set(Calendar.YEAR, selectedYear);
-                            calendar.set(Calendar.MONTH, selectedMonth);
-                            calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
-
-                            dateInput.setText(sdf.format(calendar.getTime()));
-                      },
-                    defaultYear, defaultMonth, defaultDay
-                );
-                datePickerDialog.show();
-            }
-        });
-
-
-//        Show categories on spinner
-        categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
-            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
-            Category temp = new Category("Any");
-            temp.id = -1;
-            categoriesWithAll.add(temp);
-            categoriesWithAll.addAll(categories);
-            ArrayAdapter<Category> catAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, categoriesWithAll);
-            catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            catInput.setAdapter(catAdapter);
-        });
-
-//        show type on spinner, show filtered if needed
-        typeViewModel.getAllTypes().observe(this, types -> {
-            List<Type> allTypes = new ArrayList<>(types);
-
-            catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Category selectedCat = (Category) catInput.getSelectedItem();
-
-                    List<Type> filteredTypes;
-                    if (selectedCat.id == -1){
-                        filteredTypes = allTypes;
-                    } else {
-                        filteredTypes = new ArrayList<>();
-                        for (Type t : allTypes) {
-                            if (t.categoryId == selectedCat.id) {
-                                filteredTypes.add(t);
-                            }
-                        }
-                    }
-
-                    ArrayAdapter<Type> typeAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, filteredTypes);
-                    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    typeInput.setAdapter(typeAdapter);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                    return;
-                }
-            });
-        });
-
-//        prefill values if editing
-        if (existingEntry != null){
-            dateInput.setText(existingEntry.entryDB.date);
-            descInput.setText(existingEntry.entryDB.description);
-            partInput.setText(existingEntry.entryDB.part);
-            completeInput.setActivated(existingEntry.entryDB.isComplete);
-            notesInput.setText(existingEntry.entryDB.notes);
-        }
-
-        builder.setPositiveButton("Created", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                EntryViewModel_2 entryViewModel = new ViewModelProvider(MainActivity.this).get(EntryViewModel_2.class);
-
-                String date = dateInput.getText().toString();
-                Type type = (Type) typeInput.getSelectedItem();
-                String desc = descInput.getText().toString();
-                String part = partInput.getText().toString();
-                boolean isComplete = completeInput.isActivated();
-                String notes = notesInput.getText().toString();
-
-//                TODO: Add validation for createEntry
-
-                EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
-                if (existingEntry != null) {
-                    newEntry.id = existingEntry.entryDB.id;
-                    entryViewModel.updateEntry(newEntry);
-                }
-                else {
-                    entryViewModel.insertEntry(newEntry);
-                }
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MainActivity.this,"WHATT", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
+//    public void showCreatePopup(@Nullable EntryWithType existingEntry) {
+//        CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+//        TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
+//
+//        View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_create_entry, null);
+//        Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
+//        builder.setView(popupView);
+//        builder.setTitle("Create Entry");
+//
+//        EditText dateInput = popupView.findViewById(R.id.popup_date_field);
+//        Spinner typeInput = popupView.findViewById(R.id.popup_type_spinner);
+//        Spinner catInput = popupView.findViewById(R.id.popup_category_spinner);
+//        EditText descInput = popupView.findViewById(R.id.popup_description_field);
+//        EditText partInput = popupView.findViewById(R.id.popup_part_field);
+//        CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
+//        EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
+//
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//        dateInput.setText(sdf.format(calendar.getTime()));
+//
+////        Show date picker dialog
+//        dateInput.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int defaultYear = calendar.get(Calendar.YEAR);
+//                int defaultMonth = calendar.get(Calendar.MONTH);
+//                int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
+//
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+////                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+//                        (view, selectedYear, selectedMonth, selectedDay) -> {
+//                            calendar.set(Calendar.YEAR, selectedYear);
+//                            calendar.set(Calendar.MONTH, selectedMonth);
+//                            calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
+//
+//                            dateInput.setText(sdf.format(calendar.getTime()));
+//                      },
+//                    defaultYear, defaultMonth, defaultDay
+//                );
+//                datePickerDialog.show();
+//            }
+//        });
+//
+//
+////        Show categories on spinner
+//        categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
+//            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
+//            Category temp = new Category("Any");
+//            temp.id = -1;
+//            categoriesWithAll.add(temp);
+//            categoriesWithAll.addAll(categories);
+//            ArrayAdapter<Category> catAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, categoriesWithAll);
+//            catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            catInput.setAdapter(catAdapter);
+//        });
+//
+////        show type on spinner, show filtered if needed
+//        typeViewModel.getAllTypes().observe(this, types -> {
+//            List<Type> allTypes = new ArrayList<>(types);
+//
+//            catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    Category selectedCat = (Category) catInput.getSelectedItem();
+//
+//                    List<Type> filteredTypes;
+//                    if (selectedCat.id == -1){
+//                        filteredTypes = allTypes;
+//                    } else {
+//                        filteredTypes = new ArrayList<>();
+//                        for (Type t : allTypes) {
+//                            if (t.categoryId == selectedCat.id) {
+//                                filteredTypes.add(t);
+//                            }
+//                        }
+//                    }
+//
+//                    ArrayAdapter<Type> typeAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, filteredTypes);
+//                    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    typeInput.setAdapter(typeAdapter);
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> parent) {
+//                    return;
+//                }
+//            });
+//        });
+//
+////        prefill values if editing
+//        if (existingEntry != null){
+//            dateInput.setText(existingEntry.entryDB.date);
+//            descInput.setText(existingEntry.entryDB.description);
+//            partInput.setText(existingEntry.entryDB.part);
+//            completeInput.setActivated(existingEntry.entryDB.isComplete);
+//            notesInput.setText(existingEntry.entryDB.notes);
+//        }
+//
+//        builder.setPositiveButton("Created", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                EntryViewModel_2 entryViewModel = new ViewModelProvider(MainActivity.this).get(EntryViewModel_2.class);
+//
+//                String date = dateInput.getText().toString();
+//                Type type = (Type) typeInput.getSelectedItem();
+//                String desc = descInput.getText().toString();
+//                String part = partInput.getText().toString();
+//                boolean isComplete = completeInput.isChecked();
+//                String notes = notesInput.getText().toString();
+//
+////                TODO: Add validation for createEntry
+//
+//                EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
+//                if (existingEntry != null) {
+//                    newEntry.id = existingEntry.entryDB.id;
+//                    entryViewModel.updateEntry(newEntry);
+//                }
+//                else {
+//                    entryViewModel.insertEntry(newEntry);
+//                }
+//
+//            }
+//        });
+//
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                Toast.makeText(MainActivity.this,"WHATT", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 }

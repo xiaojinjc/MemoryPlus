@@ -3,18 +3,41 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popup_create_entry"
-    android:layout_height="450dp"
-    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
     >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Entry"
+                android:textSize="28dp"/>
+
+        </Toolbar>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/main"
+            android:padding="10dp"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -36,8 +59,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -56,8 +78,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -76,8 +97,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -89,7 +109,8 @@
         <EditText
             android:id="@+id/popup_description_field"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
+            android:gravity="center"
             android:hint="Enter description"
             />
     </LinearLayout>
@@ -97,8 +118,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -114,22 +134,28 @@
             android:hint="1/, s2 ep2,..."
             />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completed?"/>
+            android:paddingStart="50dp">
 
-        <CheckBox
-            android:id="@+id/popup_complete_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Completed?"/>
+
+            <CheckBox
+                android:id="@+id/popup_complete_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -141,9 +167,32 @@
         <EditText
             android:id="@+id/popup_notes_field"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:hint="Enter additional information"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:padding="10dp">
+
+        <Button
+            android:id="@+id/cancel_entry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            />
+
+        <Button
+            android:id="@+id/create_entry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create"
+            />
+
     </LinearLayout>
 
 
