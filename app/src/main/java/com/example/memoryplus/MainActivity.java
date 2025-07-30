@@ -54,13 +54,6 @@ import java.util.TreeSet;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private List<Entry> entries;
-    private RecyclerView recyclerView;
-//    private EntryAdapter adapter;
-    private  EntryViewModel entryViewModel;
-    private TypeViewModel typeViewModel;
-    private EntryGroupedAdapter adapter;
-
     private ImageButton mainSettingButton;
     private FloatingActionButton createButton;
 
@@ -69,8 +62,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EntryViewModel_2  viewModel = new ViewModelProvider(this).get(EntryViewModel_2.class);
+        pageViewerSetup();
 
+//        Open settings popup menu
+        mainSettingButton = findViewById(R.id.button3);
+        mainSettingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMenuPopup();
+            }
+        });
+
+//        Go to create entry activity
+        createButton = findViewById(R.id.createEntryFab);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                showCreatePopup(null);
+                startActivity(new Intent(MainActivity.this, CreateEntryActivity.class));
+            }
+        });
+
+    }
+
+//     Sets up the monthViewPager to display month fragments for each year
+    private void pageViewerSetup() {
         TextView yearDisplay = findViewById(R.id.toolbarYearText);
         TextView monthDisplay = findViewById(R.id.month_display);
         ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
@@ -91,24 +107,24 @@ public class MainActivity extends AppCompatActivity {
         monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                super.onPageSelected(position);
+            super.onPageSelected(position);
 
-                // position is 0 for Jan, 1 for Feb, ..., 11 for Dec
-                String selectedMonth = monthNames[position];
+            // position is 0 for Jan, 1 for Feb, ..., 11 for Dec
+            String selectedMonth = monthNames[position];
 
-                // Get year from the top-left TextView
-                String yearText = yearDisplay.getText().toString();
-                int selectedYear = 2025; // fallback
+            // Get year from the top-left TextView
+            String yearText = yearDisplay.getText().toString();
+            int selectedYear = 2025; // fallback
 
-                try {
-                    selectedYear = Integer.parseInt(yearText);
-                } catch (NumberFormatException e) {
-                    Log.e("MonthDisplay", "Invalid year format: " + yearText);
-                }
+            try {
+                selectedYear = Integer.parseInt(yearText);
+            } catch (NumberFormatException e) {
+                Log.e("MonthDisplay", "Invalid year format: " + yearText);
+            }
 
-                // Update the month display
-                String label = selectedMonth + " " + selectedYear;
-                monthDisplay.setText(label);
+            // Update the month display
+            String label = selectedMonth + " " + selectedYear;
+            monthDisplay.setText(label);
             }
         });
 
@@ -118,41 +134,9 @@ public class MainActivity extends AppCompatActivity {
             monthDisplay.setText(monthNames[initialPage] + " " + yearDisplay.getText().toString());
         });
 
-
-
-//        Open popup menu
-        mainSettingButton = findViewById(R.id.button3);
-        mainSettingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showMenuPopup();
-            }
-        });
-
-//        Open create entry popup
-        createButton = findViewById(R.id.createEntryFab);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                showCreatePopup(null);
-                startActivity(new Intent(MainActivity.this, CreateEntryActivity.class));
-            }
-        });
-
     }
 
-//    TODO: understand this as well
-    private void updateMonthText(TextView monthDisplay, List<YearMonth> months, int position) {
-        if (position >= 0 && position < months.size()) {
-            YearMonth ym = months.get(position);
-            String formatted = ym.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + ym.getYear();
-            monthDisplay.setText(formatted);
-        } else {
-            monthDisplay.setText("");
-        }
-    }
-
-
+//    Shows a popup of the settings
     private void showMenuPopup() {
         Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
         PopupMenu settingPopup = new PopupMenu(wrapper, mainSettingButton);
@@ -176,141 +160,4 @@ public class MainActivity extends AppCompatActivity {
         settingPopup.show();
     }
 
-//    Optional parameter, if there is it means its edit mode
-//    public void showCreatePopup(@Nullable EntryWithType existingEntry) {
-//        CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
-//        TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
-//
-//        View popupView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_create_entry, null);
-//        Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
-//        builder.setView(popupView);
-//        builder.setTitle("Create Entry");
-//
-//        EditText dateInput = popupView.findViewById(R.id.popup_date_field);
-//        Spinner typeInput = popupView.findViewById(R.id.popup_type_spinner);
-//        Spinner catInput = popupView.findViewById(R.id.popup_category_spinner);
-//        EditText descInput = popupView.findViewById(R.id.popup_description_field);
-//        EditText partInput = popupView.findViewById(R.id.popup_part_field);
-//        CheckBox completeInput = popupView.findViewById(R.id.popup_complete_field);
-//        EditText notesInput = popupView.findViewById(R.id.popup_notes_field);
-//
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-//        dateInput.setText(sdf.format(calendar.getTime()));
-//
-////        Show date picker dialog
-//        dateInput.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int defaultYear = calendar.get(Calendar.YEAR);
-//                int defaultMonth = calendar.get(Calendar.MONTH);
-//                int defaultDay = calendar.get(Calendar.DAY_OF_MONTH);
-//
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
-////                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-//                        (view, selectedYear, selectedMonth, selectedDay) -> {
-//                            calendar.set(Calendar.YEAR, selectedYear);
-//                            calendar.set(Calendar.MONTH, selectedMonth);
-//                            calendar.set(Calendar.DAY_OF_MONTH, selectedDay);
-//
-//                            dateInput.setText(sdf.format(calendar.getTime()));
-//                      },
-//                    defaultYear, defaultMonth, defaultDay
-//                );
-//                datePickerDialog.show();
-//            }
-//        });
-//
-//
-////        Show categories on spinner
-//        categoryViewModel.getAllCategories().observe(MainActivity.this, categories -> {
-//            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
-//            Category temp = new Category("Any");
-//            temp.id = -1;
-//            categoriesWithAll.add(temp);
-//            categoriesWithAll.addAll(categories);
-//            ArrayAdapter<Category> catAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, categoriesWithAll);
-//            catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            catInput.setAdapter(catAdapter);
-//        });
-//
-////        show type on spinner, show filtered if needed
-//        typeViewModel.getAllTypes().observe(this, types -> {
-//            List<Type> allTypes = new ArrayList<>(types);
-//
-//            catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                @Override
-//                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    Category selectedCat = (Category) catInput.getSelectedItem();
-//
-//                    List<Type> filteredTypes;
-//                    if (selectedCat.id == -1){
-//                        filteredTypes = allTypes;
-//                    } else {
-//                        filteredTypes = new ArrayList<>();
-//                        for (Type t : allTypes) {
-//                            if (t.categoryId == selectedCat.id) {
-//                                filteredTypes.add(t);
-//                            }
-//                        }
-//                    }
-//
-//                    ArrayAdapter<Type> typeAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, filteredTypes);
-//                    typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    typeInput.setAdapter(typeAdapter);
-//                }
-//
-//                @Override
-//                public void onNothingSelected(AdapterView<?> parent) {
-//                    return;
-//                }
-//            });
-//        });
-//
-////        prefill values if editing
-//        if (existingEntry != null){
-//            dateInput.setText(existingEntry.entryDB.date);
-//            descInput.setText(existingEntry.entryDB.description);
-//            partInput.setText(existingEntry.entryDB.part);
-//            completeInput.setActivated(existingEntry.entryDB.isComplete);
-//            notesInput.setText(existingEntry.entryDB.notes);
-//        }
-//
-//        builder.setPositiveButton("Created", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                EntryViewModel_2 entryViewModel = new ViewModelProvider(MainActivity.this).get(EntryViewModel_2.class);
-//
-//                String date = dateInput.getText().toString();
-//                Type type = (Type) typeInput.getSelectedItem();
-//                String desc = descInput.getText().toString();
-//                String part = partInput.getText().toString();
-//                boolean isComplete = completeInput.isChecked();
-//                String notes = notesInput.getText().toString();
-//
-////                TODO: Add validation for createEntry
-//
-//                EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
-//                if (existingEntry != null) {
-//                    newEntry.id = existingEntry.entryDB.id;
-//                    entryViewModel.updateEntry(newEntry);
-//                }
-//                else {
-//                    entryViewModel.insertEntry(newEntry);
-//                }
-//
-//            }
-//        });
-//
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                Toast.makeText(MainActivity.this,"WHATT", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        AlertDialog dialog = builder.create();
-//        dialog.show();
-//    }
 }
