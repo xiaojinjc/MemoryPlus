@@ -30,6 +30,7 @@
         <activity
             android:name=".CategoryActivity"
             android:exported="false" />
+        <activity android:name="com.example.memoryplus.CreateEntryActivity" />
     </application>
 
 </manifest>
