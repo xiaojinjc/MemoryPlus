@@ -62,10 +62,16 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mainSettingButton;
     private FloatingActionButton createButton;
 
+    private MonthPagerAdapter monthPagerAdapter;
+    private ViewPager2 monthViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        monthPagerAdapter = new MonthPagerAdapter(this, LocalDate.now().getYear());
+        monthViewPager = findViewById(R.id.monthViewPager);
 
         pageViewerSetup();
 
@@ -103,41 +109,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showYearDialog(int currentYear, OnYearSelectedListener listener) {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.popup_select_year);
-
-        RecyclerView recyclerView = dialog.findViewById(R.id.recyclerViewYears);
-        Button cancelBtn = dialog.findViewById(R.id.buttonCancel);
-
-        List<Integer> years = new ArrayList<>();
-        for (int y = 2000; y <= 2035; y++) {
-            years.add(y);
-        }
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        YearListAdapter adapter = new YearListAdapter(years, currentYear, selectedYear -> {
-            listener.onYearSelected(selectedYear);
-            dialog.dismiss();
-        });
-        recyclerView.setAdapter(adapter);
-
-        cancelBtn.setOnClickListener(v -> dialog.dismiss());
-
-        dialog.show();
-    }
-
-    interface OnYearSelectedListener {
-        void onYearSelected(int year);
-    }
-
-
 
     //     Sets up the monthViewPager to display month fragments for each year
     private void pageViewerSetup() {
         TextView yearDisplay = findViewById(R.id.toolbarYearText);
         TextView monthDisplay = findViewById(R.id.month_display);
-        ViewPager2 monthViewPager = findViewById(R.id.monthViewPager);
         String[] monthNames = {
                 "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
@@ -146,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
         int[] currentYear = {LocalDate.now().getYear()};
         yearDisplay.setText(String.valueOf(currentYear[0]));
 
-        MonthPagerAdapter monthPagerAdapter = new MonthPagerAdapter(this, currentYear[0]);
         monthViewPager.setAdapter(monthPagerAdapter);
 
         monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
@@ -182,18 +157,43 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        String yearText = yearDisplay.getText().toString();
-        int currentSelectedYear = Integer.parseInt(yearText);
         yearDisplay.setOnClickListener(v -> {
-            showYearDialog(currentSelectedYear, newYear -> {
-                yearDisplay.setText(String.valueOf(newYear));
-                monthPagerAdapter.setYear(newYear);
-                monthViewPager.setAdapter(monthPagerAdapter);
-            });
+            showYearDialog();
         });
+    }
 
+    private void showYearDialog() {
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_select_year, null);
+        Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
+        AlertDialog.Builder builder = new AlertDialog.Builder(wrapper);
+        builder.setView(dialogView);
+        builder.setTitle("Select Year");
+        AlertDialog dialog = builder.create();
 
+        RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewYears);
+        TextView yearDisplay = findViewById(R.id.toolbarYearText);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
+        List<Integer> yearList = new ArrayList<>();
+//        Default to this year
+        int currentYear = Year.now().getValue();
+        for (int i = currentYear - 20; i <= currentYear + 20; i++){
+            yearList.add(i);
+        }
+
+        YearListAdapter adapter = new YearListAdapter(yearList, currentYear, selectedYear -> {
+            yearDisplay.setText(String.valueOf(selectedYear));
+            monthPagerAdapter.setYear(selectedYear);
+            monthViewPager.setAdapter(monthPagerAdapter);
+            dialog.dismiss();
+        });
+        recyclerView.setAdapter(adapter);
+
+        currentYear = Integer.parseInt(yearDisplay.getText().toString());
+        int scrollTo = yearList.indexOf(currentYear) - 1;
+        recyclerView.scrollToPosition(scrollTo);
+
+        dialog.show();
     }
 
 //    Shows a popup of the settings

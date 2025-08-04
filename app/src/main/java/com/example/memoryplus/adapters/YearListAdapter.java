@@ -1,5 +1,6 @@
 package com.example.memoryplus.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.memoryplus.R;
+
 import java.util.List;
 
 public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHolder> {
 
-    private final List<Integer> years;
-    private final int currentYear;
+    private final List<Integer> yearList;
+    private int selectedYear;
     private final OnClickListener listener;
 
     public interface OnClickListener {
@@ -21,39 +24,44 @@ public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHo
     }
 
     public YearListAdapter(List<Integer> years, int currentYear, OnClickListener listener) {
-        this.years = years;
-        this.currentYear = currentYear;
+        this.yearList = years;
+        this.selectedYear = currentYear;
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        TextView tv = new TextView(parent.getContext());
-        tv.setPadding(32, 24, 32, 24);
-        tv.setTextSize(18);
-        return new ViewHolder(tv);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_year, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        int year = years.get(position);
-        holder.textView.setText(String.valueOf(year));
-        holder.textView.setAlpha(year == currentYear ? 1f : 0.7f);
-        holder.textView.setOnClickListener(v -> listener.onYearClick(year));
+        int year = yearList.get(position);
+        holder.yearText.setText(String.valueOf(year));
+        holder.yearText.setAlpha(year == selectedYear ? 1f : 0.7f);
+        holder.yearText.setTextSize(year == selectedYear ? 30 : 25);
+        holder.yearText.setOnClickListener(v -> {
+            int previousSelected = selectedYear;
+            selectedYear = year;
+            notifyItemChanged(yearList.indexOf(previousSelected));
+            notifyItemChanged(position);
+            listener.onYearClick(year);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return years.size();
+        return yearList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
+        TextView yearText;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = (TextView) itemView;
+            yearText = itemView.findViewById(R.id.year_item);
         }
     }
 }
