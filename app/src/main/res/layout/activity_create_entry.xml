@@ -44,8 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="20dp"
-            android:text="Date: "
-            />
+            android:text="Date: " />
 
         <EditText
             android:id="@+id/popup_date_field"
@@ -111,7 +110,6 @@
             android:id="@+id/popup_description_field"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:gravity="center"
             android:hint="Enter description"
             />
     </LinearLayout>
