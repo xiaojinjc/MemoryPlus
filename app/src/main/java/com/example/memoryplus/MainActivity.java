@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                showCreatePopup(null);
-                startActivity(new Intent(MainActivity.this, CreateEntryActivity.class));
+                Intent intent = new Intent(MainActivity.this, CreateEntryActivity.class);
+                intent.putExtra("mode", CreateEntryActivity.CreateMode.DEFAULT);
+                startActivity(intent);
             }
         });
 

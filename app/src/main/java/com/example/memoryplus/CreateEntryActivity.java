@@ -3,6 +3,7 @@ package com.example.memoryplus;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,13 +32,20 @@ import java.util.Locale;
 
 public class CreateEntryActivity extends AppCompatActivity {
 
+    enum CreateMode {
+        DEFAULT, EDIT, CREATE_ON_DATE
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
 
         Intent intent = getIntent();
-        boolean isEdit = intent.getBooleanExtra("isEdit", false);
+        CreateMode mode = (CreateMode) getIntent().getSerializableExtra("mode");
+        if (mode != null) {
+            Log.d("ENUM", mode.toString());
+        }
 
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
         TypeViewModel typeViewModel = new ViewModelProvider(this).get(TypeViewModel.class);
@@ -140,7 +148,7 @@ public class CreateEntryActivity extends AppCompatActivity {
             });
         });
 
-        if (isEdit) {
+        if (mode == CreateMode.EDIT) {
             createTitle.setText("Edit Entry");
             createEdit.setText("Edit");
             dateInput.setText(intent.getStringExtra("date"));
@@ -148,7 +156,10 @@ public class CreateEntryActivity extends AppCompatActivity {
             notesInput.setText(intent.getStringExtra("notes"));
             partInput.setText(intent.getStringExtra("part"));
             completeInput.setChecked(intent.getBooleanExtra("isComplete", false));
+        } else if (mode == CreateMode.CREATE_ON_DATE) {
+            dateInput.setText(intent.getStringExtra("date"));
         }
+
 
         createEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +168,10 @@ public class CreateEntryActivity extends AppCompatActivity {
 
                 String date = dateInput.getText().toString();
                 Type type = (Type) typeInput.getSelectedItem();
+                if (type == null) {
+                    Log.e("CREATE", "Type is null, aborting insert");
+                    return;
+                }
                 String desc = descInput.getText().toString();
                 String part = partInput.getText().toString();
                 boolean isComplete = completeInput.isChecked();
@@ -165,13 +180,23 @@ public class CreateEntryActivity extends AppCompatActivity {
 //                TODO: add validation
 
                 EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
-                if (isEdit) {
-                    newEntry.id = intent.getIntExtra("entryId",-1);
-                    entryViewModel.updateEntry(newEntry);
-                } else {
-                    entryViewModel.insertEntry(newEntry);
+                switch (mode) {
+                    case EDIT:
+                        newEntry.id = intent.getIntExtra("entryId", -1);
+                        entryViewModel.updateEntry(newEntry);
+                        finish();
+                        break;
+                    case CREATE_ON_DATE:
+                        entryViewModel.insertEntry(newEntry);
+                        finish();
+                        break;
+                    case DEFAULT:
+                    default:
+                        entryViewModel.insertEntry(newEntry);
+                        finish();
+                        break;
                 }
-                finish();
+
             }
         });
 

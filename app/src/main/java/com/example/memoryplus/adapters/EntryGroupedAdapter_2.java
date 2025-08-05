@@ -53,6 +53,15 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
             ((HeaderViewHolder) holder).dateText.setText(tempDate);
             ((HeaderViewHolder) holder).pinIcon.setVisibility(header.food ? View.VISIBLE : View.GONE);
             ((HeaderViewHolder) holder).checkIcon.setVisibility(header.gym ? View.VISIBLE : View.GONE);
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onDateLongClick(header.date);
+                    return true;
+                }
+            });
+
         } else if (holder instanceof  EntryViewHolder && item instanceof EntryItem){
             EntryItem tempEntry = (EntryItem) item;
             EntryWithType entryWithType = tempEntry.entryWithType;
@@ -123,6 +132,7 @@ public class EntryGroupedAdapter_2 extends RecyclerView.Adapter<RecyclerView.Vie
 
     public interface OnEntryClickListener {
         void onEntryLongClick(EntryWithType entryDB);
+        void onDateLongClick(String date);
     }
 
     public void setOnEntryClickListener (EntryGroupedAdapter_2.OnEntryClickListener listener) {
