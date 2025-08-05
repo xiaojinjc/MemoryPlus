@@ -67,11 +67,11 @@
                         android:padding="10dp"/>
 
                     <ImageButton
-                        android:id="@+id/button2"
+                        android:id="@+id/main_today"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_baseline_menu_24"
+                        android:src="@drawable/baseline_calendar_today_24"
                         app:tint="#FFFFFF"
                         android:padding="10dp"/>
 

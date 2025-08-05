@@ -59,6 +59,7 @@ import java.util.TreeSet;
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton mainSearchButton;
+    private ImageButton mainTodayButton;
     private ImageButton mainSettingButton;
     private FloatingActionButton createButton;
 
@@ -86,6 +87,29 @@ public class MainActivity extends AppCompatActivity {
 //                input.setVisibility(View.VISIBLE);
 //            }
 //        });
+
+        mainTodayButton = findViewById(R.id.main_today);
+        mainTodayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView monthDisplay = findViewById(R.id.month_display);
+                TextView yearDisplay = findViewById(R.id.toolbarYearText);
+                String[] monthNames = {
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                };
+
+                monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
+
+                int initialPage = monthViewPager.getCurrentItem();
+                monthViewPager.post(() -> {
+                    monthViewPager.setCurrentItem(initialPage, false);
+                    monthDisplay.setText(monthNames[initialPage] + " " + yearDisplay.getText().toString());
+                });
+                monthPagerAdapter.setYear(Year.now().getValue());
+                yearDisplay.setText(Year.now().toString());
+            }
+        });
 
 
 //        Open settings popup menu
