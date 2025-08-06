@@ -65,9 +65,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView yearDisplay;
     private TextView monthDisplay;
     private String[] monthNames;
+    private int currentYear;
+    private List<Integer> yearList;
 
     private MonthPagerAdapter monthPagerAdapter;
     private ViewPager2 monthViewPager;
+    private YearListAdapter yearListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +85,19 @@ public class MainActivity extends AppCompatActivity {
         monthDisplay = findViewById(R.id.month_display);
         monthViewPager = findViewById(R.id.monthViewPager);
 
-        monthPagerAdapter = new MonthPagerAdapter(this, LocalDate.now().getYear());
+        yearList = new ArrayList<>();
+//        Default to this year
+        currentYear = Year.now().getValue();
+        for (int i = currentYear - 20; i <= currentYear + 20; i++){
+            yearList.add(i);
+        }
+        yearListAdapter = new YearListAdapter(yearList, currentYear);
+
+        monthPagerAdapter = new MonthPagerAdapter(this, currentYear);
         monthNames = new String[]{
                 "January", "February", "March", "April", "May", "June",
                 "July", "August", "September", "October", "November", "December"
         };
-
 
         pageViewerSetup();
 
@@ -104,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 //        Jump to today
-//        TODO: can improve jump to today i think
         mainTodayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 yearDisplay.setText(Year.now().toString());
             }
         });
-
 
 //        Open settings popup menu
         mainSettingButton.setOnClickListener(new View.OnClickListener() {
@@ -193,25 +201,18 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewYears);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-        List<Integer> yearList = new ArrayList<>();
-//        Default to this year
-        int currentYear = Year.now().getValue();
-        for (int i = currentYear - 20; i <= currentYear + 20; i++){
-            yearList.add(i);
-        }
-
-        YearListAdapter adapter = new YearListAdapter(yearList, currentYear);
-        adapter.setOnClickListener(new YearListAdapter.OnClickListener() {
+        yearListAdapter.setOnClickListener(new YearListAdapter.OnClickListener() {
             @Override
             public void onYearClick(int selectedYear) {
                 yearDisplay.setText(String.valueOf(selectedYear));
-                adapter.setSelectedYear(selectedYear);
+                yearListAdapter.setSelectedYear(selectedYear);
+                Log.d("main year input", String.valueOf(selectedYear));
                 monthPagerAdapter.setYear(selectedYear);
                 monthViewPager.setAdapter(monthPagerAdapter);
                 dialog.dismiss();
             }
         });
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(yearListAdapter);
 
         currentYear = Integer.parseInt(yearDisplay.getText().toString());
         int scrollTo = yearList.indexOf(currentYear) - 1;

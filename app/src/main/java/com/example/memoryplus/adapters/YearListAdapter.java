@@ -44,6 +44,7 @@ public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         int year = yearList.get(position);
         holder.yearText.setText(String.valueOf(year));
+        Log.d("main year input", String.valueOf(selectedYear));
         holder.yearText.setAlpha(year == selectedYear ? 1f : 0.7f);
         holder.yearText.setTextSize(year == selectedYear ? 30 : 25);
         holder.yearText.setOnClickListener(v -> {
