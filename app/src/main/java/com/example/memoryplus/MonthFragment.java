@@ -70,7 +70,7 @@ public class MonthFragment extends Fragment {
 
         int year = requireArguments().getInt(ARG_YEAR);
         int month = requireArguments().getInt(ARG_MONTH);
-        Log.d("Month", "mfer the month is "+ month +" and the year is " + year);
+//        Log.d("Month", "mfer the month is "+ month +" and the year is " + year);
 
         entryViewModel = new ViewModelProvider(requireActivity()).get(EntryViewModel_2.class);
 
@@ -101,6 +101,7 @@ public class MonthFragment extends Fragment {
         });
     }
 
+//    TODO: Add empty dates
     public List<ListItem> groupEntriesByDate(List<EntryWithType> entriesWithType) {
         List<ListItem> result = new ArrayList<>();
         String lastDate = null;

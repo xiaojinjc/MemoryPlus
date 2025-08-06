@@ -110,7 +110,7 @@ public class TypeActivity extends AppCompatActivity {
                         String typeName = typeInput.getText().toString().trim();
                         List<TypeWithCategory> currentList = typeViewModel.getAllTypesWithCategories().getValue();
 
-//                Validation
+//                        Validation
                         if (spinner.getSelectedItem() == null){
                             Toast.makeText(TypeActivity.this, "No category has been selected.", Toast.LENGTH_SHORT).show();
                             return;

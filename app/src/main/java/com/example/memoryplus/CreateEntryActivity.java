@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,7 +94,7 @@ public class CreateEntryActivity extends AppCompatActivity {
 
 //        Show categories on spinner
         categoryViewModel.getAllCategories().observe(CreateEntryActivity.this, categories -> {
-            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a any category
+            List<Category> categoriesWithAll = new ArrayList<>(); // new list which will contain a 'any category'
             Category temp = new Category("Any");
             temp.id = -1;
             categoriesWithAll.add(temp);
@@ -106,6 +107,7 @@ public class CreateEntryActivity extends AppCompatActivity {
 //        show type on spinner, show filtered if needed
         typeViewModel.getAllTypes().observe(this, types -> {
             int typeIndex = -1;
+            Log.d("Type List Size", String.valueOf(types.size()));
             for (int i = 0; i < types.size(); i++) {
                 if (types.get(i).id == intent.getIntExtra("typeId", -1)){
                     typeIndex = i;
@@ -113,12 +115,9 @@ public class CreateEntryActivity extends AppCompatActivity {
                 }
             }
 
-            if (typeIndex >= 0) {
-                typeInput.setSelection(typeIndex);
-            }
-
             List<Type> allTypes = new ArrayList<>(types);
 
+            int finalTypeIndex = typeIndex;
             catInput.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -139,8 +138,12 @@ public class CreateEntryActivity extends AppCompatActivity {
                     ArrayAdapter<Type> typeAdapter = new ArrayAdapter<>(CreateEntryActivity.this, android.R.layout.simple_spinner_dropdown_item, filteredTypes);
                     typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     typeInput.setAdapter(typeAdapter);
-                }
 
+                    if (finalTypeIndex >= 0) {
+                        Log.d("TypeIndex", String.valueOf(finalTypeIndex));
+                        typeInput.setSelection(finalTypeIndex);
+                    }
+                }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     return;
@@ -148,6 +151,7 @@ public class CreateEntryActivity extends AppCompatActivity {
             });
         });
 
+//        Autofill no different create modes
         if (mode == CreateMode.EDIT) {
             createTitle.setText("Edit Entry");
             createEdit.setText("Edit");
@@ -159,7 +163,6 @@ public class CreateEntryActivity extends AppCompatActivity {
         } else if (mode == CreateMode.CREATE_ON_DATE) {
             dateInput.setText(intent.getStringExtra("date"));
         }
-
 
         createEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +182,12 @@ public class CreateEntryActivity extends AppCompatActivity {
 
 //                TODO: add validation
 
+                if (desc.isEmpty()) {
+                    Toast.makeText(CreateEntryActivity.this, "Description can't be left empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
                 EntryDB newEntry = new EntryDB(date, type.id, desc, part, isComplete, notes);
                 switch (mode) {
                     case EDIT:
@@ -187,9 +196,6 @@ public class CreateEntryActivity extends AppCompatActivity {
                         finish();
                         break;
                     case CREATE_ON_DATE:
-                        entryViewModel.insertEntry(newEntry);
-                        finish();
-                        break;
                     case DEFAULT:
                     default:
                         entryViewModel.insertEntry(newEntry);

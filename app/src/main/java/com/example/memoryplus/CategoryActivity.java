@@ -51,8 +51,6 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-//        TODO: night theme for alerts
-//        Alert dialog for deleting
         adapter.setOnCategoryClickListener(new CategoryAdapter.OnCategoryClickListener() {
             @Override
             public void onDeleteClick(Category category) {
@@ -86,6 +84,7 @@ public class CategoryActivity extends AppCompatActivity {
                         String catName = categoryInput.getText().toString().trim();
                         List<Category> currentList = viewModel.getAllCategories().getValue();
 
+//                        Validation
                         if (catName.isEmpty()) {
                             Toast.makeText(CategoryActivity.this, "Category name can't be empty.", Toast.LENGTH_SHORT).show();
                             return;
