@@ -17,16 +17,20 @@ public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHo
 
     private final List<Integer> yearList;
     private int selectedYear;
-    private final OnClickListener listener;
+    private OnClickListener listener;
 
-    public interface OnClickListener {
-        void onYearClick(int year);
+    public void setSelectedYear(int year) {
+        int previousSelected = selectedYear;
+        selectedYear = year;
+
+        notifyItemChanged(yearList.indexOf(previousSelected));
+        notifyItemChanged(yearList.indexOf(selectedYear));
     }
 
-    public YearListAdapter(List<Integer> years, int currentYear, OnClickListener listener) {
+
+    public YearListAdapter(List<Integer> years, int currentYear) {
         this.yearList = years;
         this.selectedYear = currentYear;
-        this.listener = listener;
     }
 
     @NonNull
@@ -43,10 +47,6 @@ public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHo
         holder.yearText.setAlpha(year == selectedYear ? 1f : 0.7f);
         holder.yearText.setTextSize(year == selectedYear ? 30 : 25);
         holder.yearText.setOnClickListener(v -> {
-            int previousSelected = selectedYear;
-            selectedYear = year;
-            notifyItemChanged(yearList.indexOf(previousSelected));
-            notifyItemChanged(position);
             listener.onYearClick(year);
         });
     }
@@ -63,6 +63,14 @@ public class YearListAdapter extends RecyclerView.Adapter<YearListAdapter.ViewHo
             super(itemView);
             yearText = itemView.findViewById(R.id.year_item);
         }
+    }
+
+    public interface OnClickListener {
+        void onYearClick(int year);
+    }
+
+    public void setOnClickListener (OnClickListener listener) {
+        this.listener = listener;
     }
 }
 

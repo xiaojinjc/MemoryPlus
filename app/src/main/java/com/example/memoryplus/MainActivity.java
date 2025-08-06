@@ -62,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mainTodayButton;
     private ImageButton mainSettingButton;
     private FloatingActionButton createButton;
+    private TextView yearDisplay;
+    private TextView monthDisplay;
+    private String[] monthNames;
 
     private MonthPagerAdapter monthPagerAdapter;
     private ViewPager2 monthViewPager;
@@ -71,8 +74,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        monthPagerAdapter = new MonthPagerAdapter(this, LocalDate.now().getYear());
+//        All items on layout
+        mainTodayButton = findViewById(R.id.main_today);
+        mainSettingButton = findViewById(R.id.main_setting);
+        createButton = findViewById(R.id.createEntryFab);
+        yearDisplay = findViewById(R.id.toolbarYearText);
+        monthDisplay = findViewById(R.id.month_display);
         monthViewPager = findViewById(R.id.monthViewPager);
+
+        monthPagerAdapter = new MonthPagerAdapter(this, LocalDate.now().getYear());
+        monthNames = new String[]{
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+        };
+
 
         pageViewerSetup();
 
@@ -88,24 +103,12 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mainTodayButton = findViewById(R.id.main_today);
+//        Jump to today
+//        TODO: can improve jump to today i think
         mainTodayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView monthDisplay = findViewById(R.id.month_display);
-                TextView yearDisplay = findViewById(R.id.toolbarYearText);
-                String[] monthNames = {
-                        "January", "February", "March", "April", "May", "June",
-                        "July", "August", "September", "October", "November", "December"
-                };
-
                 monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
-
-                int initialPage = monthViewPager.getCurrentItem();
-                monthViewPager.post(() -> {
-                    monthViewPager.setCurrentItem(initialPage, false);
-                    monthDisplay.setText(monthNames[initialPage] + " " + yearDisplay.getText().toString());
-                });
                 monthPagerAdapter.setYear(Year.now().getValue());
                 yearDisplay.setText(Year.now().toString());
             }
@@ -113,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 //        Open settings popup menu
-        mainSettingButton = findViewById(R.id.main_setting);
         mainSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        Go to create entry activity
-        createButton = findViewById(R.id.createEntryFab);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,20 +137,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //     Sets up the monthViewPager to display month fragments for each year
+//     Sets up the monthViewPager to display month fragments for each year
     private void pageViewerSetup() {
-        TextView yearDisplay = findViewById(R.id.toolbarYearText);
-        TextView monthDisplay = findViewById(R.id.month_display);
-        String[] monthNames = {
-                "January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December"
-        };
-
         int[] currentYear = {LocalDate.now().getYear()};
         yearDisplay.setText(String.valueOf(currentYear[0]));
 
         monthViewPager.setAdapter(monthPagerAdapter);
-
         monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
 
         monthViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -188,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+//    Shows the popup to select the year
     private void showYearDialog() {
         View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popup_select_year, null);
         Context wrapper = new ContextThemeWrapper(MainActivity.this, com.google.android.material.R.style.ThemeOverlay_AppCompat_Dark);
@@ -197,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
 
         RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerViewYears);
-        TextView yearDisplay = findViewById(R.id.toolbarYearText);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
         List<Integer> yearList = new ArrayList<>();
@@ -207,11 +200,16 @@ public class MainActivity extends AppCompatActivity {
             yearList.add(i);
         }
 
-        YearListAdapter adapter = new YearListAdapter(yearList, currentYear, selectedYear -> {
-            yearDisplay.setText(String.valueOf(selectedYear));
-            monthPagerAdapter.setYear(selectedYear);
-            monthViewPager.setAdapter(monthPagerAdapter);
-            dialog.dismiss();
+        YearListAdapter adapter = new YearListAdapter(yearList, currentYear);
+        adapter.setOnClickListener(new YearListAdapter.OnClickListener() {
+            @Override
+            public void onYearClick(int selectedYear) {
+                yearDisplay.setText(String.valueOf(selectedYear));
+                adapter.setSelectedYear(selectedYear);
+                monthPagerAdapter.setYear(selectedYear);
+                monthViewPager.setAdapter(monthPagerAdapter);
+                dialog.dismiss();
+            }
         });
         recyclerView.setAdapter(adapter);
 

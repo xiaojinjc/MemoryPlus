@@ -29,9 +29,11 @@ import com.example.memoryplus.viewmodels.EntryViewModel_2;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -155,7 +157,7 @@ public class MonthFragment extends Fragment {
 
         new AlertDialog.Builder(requireContext())
                 .setTitle("Options")
-                .setItems(new CharSequence[]{"Add entry to date " + date}, (dialog, which) -> {
+                .setItems(new CharSequence[]{"Add entry to date 「" + date + "」"}, (dialog, which) -> {
                     if (which == 0) {
                         Intent intent = new Intent(requireContext(), CreateEntryActivity.class);
                         intent.putExtra("mode", CreateEntryActivity.CreateMode.CREATE_ON_DATE);
