@@ -56,6 +56,7 @@ public class CreateEntryActivity extends AppCompatActivity {
         EditText dateInput = findViewById(R.id.popup_date_field);
         Spinner typeInput = findViewById(R.id.popup_type_spinner);
         Spinner catInput = findViewById(R.id.popup_category_spinner);
+//        TODO: Include cards that contain previous descriptions
         EditText descInput = findViewById(R.id.popup_description_field);
         EditText partInput = findViewById(R.id.popup_part_field);
         CheckBox completeInput = findViewById(R.id.popup_complete_field);

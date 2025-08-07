@@ -122,6 +122,7 @@ public class MonthFragment extends Fragment {
         return result;
     }
 
+//  TODO: Add delete list, auto delete after 30 days (database change? migrations...)
     public void showEntryOptionPopup(EntryWithType entryWithType) {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Options")

@@ -58,4 +58,8 @@ public class EntryRepository {
         String monthStr = String.format("%04d-%02d", year, month);
         return entryDao.getEntriesForMonth(monthStr);
     }
+
+    public LiveData<List<EntryWithType>> searchEntries(String query) {
+        return entryDao.searchEntries(query);
+    }
 }

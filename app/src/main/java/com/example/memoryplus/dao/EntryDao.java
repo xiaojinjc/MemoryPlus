@@ -47,4 +47,7 @@ public interface EntryDao {
     //    passing in the format "2025-07" to get all entries from july 2025
     @Query("SELECT * FROM entries WHERE strftime('%Y-%m', date) = :yearMonth ORDER BY date ASC")
     LiveData<List<EntryWithType>> getEntriesForMonth(String yearMonth);
+
+    @Query("SELECT * FROM entries WHERE description LIKE '%' || :query || '%' OR notes LIKE '%' || :query || '%' OR date LIKE '%' || :query || '%'")
+    LiveData<List<EntryWithType>> searchEntries(String query);
 }

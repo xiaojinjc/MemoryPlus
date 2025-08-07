@@ -52,4 +52,9 @@ public class EntryViewModel_2 extends AndroidViewModel {
     public LiveData<List<EntryWithType>> getEntriesWithTypeForMonth (int year, int month) {
         return repository.getAllEntriesWithTypeForMonth(year, month);
     }
+
+    public LiveData<List<EntryWithType>> searchEntries(String query) {
+        return repository.searchEntries(query);
+    }
+
 }
