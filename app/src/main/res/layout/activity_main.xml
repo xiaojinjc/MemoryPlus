@@ -26,30 +26,16 @@
                 android:paddingStart="-3dp"
                 android:paddingEnd="8dp">
 
-                <!-- Left side: EditText (search or text input) -->
                 <TextView
                     android:id="@+id/toolbarYearText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="2025"
-                    android:textSize="30dp"
+                    android:textSize="30sp"
                     android:background="@android:color/transparent"
                     android:textColor="@color/white"
                     android:singleLine="true"
                     android:padding="3dp" />
-
-                <EditText
-                    android:id="@+id/main_search_input"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:background="@android:color/transparent"
-                    android:textColor="@color/white"
-                    android:textSize="25dp"
-                    android:padding="3dp"
-                    />
 
                 <!-- Right side: 3 buttons -->
                 <LinearLayout
@@ -63,8 +49,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_baseline_search_24"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:src="@drawable/ic_baseline_search_24" />
 
                     <ImageButton
                         android:id="@+id/main_today"

@@ -12,9 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MemoryPlus">
         <activity
-            android:name=".TypeActivity"
+            android:name=".SearchActivity"
             android:exported="false" />
-        <!-- Intro activity -->
+        <activity
+            android:name=".TypeActivity"
+            android:exported="false" /> <!-- Intro activity -->
         <activity
             android:name=".IntroActivity"
             android:exported="true">
@@ -26,11 +28,11 @@
         </activity> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity> <!-- Create Category -->
+            android:exported="false" /> <!-- Create Category -->
         <activity
             android:name=".CategoryActivity"
             android:exported="false" />
-        <activity android:name="com.example.memoryplus.CreateEntryActivity" />
+        <activity android:name=".CreateEntryActivity" />
     </application>
 
 </manifest>

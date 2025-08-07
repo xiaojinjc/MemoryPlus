@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,10 +60,13 @@ import java.util.TreeSet;
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton mainSearchButton;
+    private ImageButton mainSearchBackButton;
     private ImageButton mainTodayButton;
     private ImageButton mainSettingButton;
     private FloatingActionButton createButton;
+    private EditText searchInput;
     private TextView yearDisplay;
+    private LinearLayout monthDisplayContainer;
     private TextView monthDisplay;
     private String[] monthNames;
     private int currentYear;
@@ -78,16 +82,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        All items on layout
+        mainSearchButton = findViewById(R.id.main_search);
         mainTodayButton = findViewById(R.id.main_today);
         mainSettingButton = findViewById(R.id.main_setting);
         createButton = findViewById(R.id.createEntryFab);
         yearDisplay = findViewById(R.id.toolbarYearText);
+        monthDisplayContainer = findViewById(R.id.month_display_container);
         monthDisplay = findViewById(R.id.month_display);
         monthViewPager = findViewById(R.id.monthViewPager);
 
         yearList = new ArrayList<>();
-//        Default to this year
-        currentYear = Year.now().getValue();
+        currentYear = Year.now().getValue(); // Default to this year
         for (int i = currentYear - 20; i <= currentYear + 20; i++){
             yearList.add(i);
         }
@@ -101,17 +106,13 @@ public class MainActivity extends AppCompatActivity {
 
         pageViewerSetup();
 
-//        mainSearchButton = findViewById(R.id.main_search);
-//        mainSearchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mainSearchButton.setVisibility(View.VISIBLE);
-//                TextView temp = findViewById(R.id.toolbarYearText);
-//                temp.setVisibility(View.GONE);
-//                EditText input = findViewById(R.id.main_search_input);
-//                input.setVisibility(View.VISIBLE);
-//            }
-//        });
+
+        mainSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
 
 //        Jump to today
         mainTodayButton.setOnClickListener(new View.OnClickListener() {
@@ -147,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
 //     Sets up the monthViewPager to display month fragments for each year
     private void pageViewerSetup() {
-        int[] currentYear = {LocalDate.now().getYear()};
-        yearDisplay.setText(String.valueOf(currentYear[0]));
+        yearDisplay.setText(String.valueOf(currentYear));
 
         monthViewPager.setAdapter(monthPagerAdapter);
         monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
