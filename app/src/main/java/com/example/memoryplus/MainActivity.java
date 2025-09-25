@@ -113,6 +113,25 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
+//        String date = getIntent().getStringExtra("scrollToDate");
+//        if (date != null){
+//            Log.d("GELLOO", "onCreate: testesttes");
+//            SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+//
+//            Date date1;
+//            try {
+//                date1 = inputFormat.parse(date);
+//            } catch (ParseException e) {
+//                throw new RuntimeException(e);
+//            }
+//            Calendar temp = Calendar.getInstance();
+//            assert date1 != null;
+//            temp.setTime(date1);
+//            monthViewPager.setCurrentItem(temp.get(Calendar.MONTH) - 1, false);
+//            monthPagerAdapter.setYear(temp.get(Calendar.YEAR));
+//            yearDisplay.setText(temp.get(Calendar.YEAR));
+//            monthDisplay.setText(monthNames[temp.get(Calendar.MONTH) - 1] + " " + temp.get(Calendar.YEAR));
+//        }
 
 //        Jump to today
         mainTodayButton.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
                 monthViewPager.setCurrentItem(LocalDate.now().getMonthValue() - 1, false);
                 monthPagerAdapter.setYear(Year.now().getValue());
                 yearDisplay.setText(Year.now().toString());
+                int initialPage = monthViewPager.getCurrentItem();
+                monthDisplay.setText(monthNames[initialPage] + " " + yearDisplay.getText().toString());
             }
         });
 

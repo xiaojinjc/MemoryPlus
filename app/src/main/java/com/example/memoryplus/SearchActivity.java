@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,6 +37,11 @@ public class SearchActivity extends AppCompatActivity {
         searchInput = findViewById(R.id.search_input);
 
         adapter = new SearchAdapter(new ArrayList<>());
+        adapter.setOnClickListener(entry -> {
+            Intent intent = new Intent();
+            intent.putExtra("scrollToDate", entry.entryDB.date);
+            finish();
+        });
 
         recyclerView = findViewById(R.id.search_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -17,6 +17,7 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     private List<EntryWithType> entries;
+    private SearchAdapter.onSearchClickListener listener;
 
     public SearchAdapter(List<EntryWithType> entries) {
         this.entries = entries;
@@ -55,6 +56,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.searchDate.setText(entry.entryDB.date);
 //        holder.otesText.setText(entryWithType.entryDB.notes);
 //        holder.notesText.setVisibility(tempEntry.isExpanded ? View.VISIBLE : View.GONE);
+
+        holder.searchLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onSearchItemClick(entry);
+                }
+            }
+        });
     }
 
     @Override
@@ -71,5 +81,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             searchLine = itemView.findViewById(R.id.search_item);
             searchDate = itemView.findViewById(R.id.search_date);
         }
+    }
+
+    public interface onSearchClickListener {
+        void onSearchItemClick(EntryWithType entry);
+    }
+
+    public void setOnClickListener(SearchAdapter.onSearchClickListener listener) {
+        this.listener = listener;
     }
 }
