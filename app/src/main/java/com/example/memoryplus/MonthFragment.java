@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,14 +110,21 @@ public class MonthFragment extends Fragment {
         DateTimeFormatter dbFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        for (EntryWithType entry : entriesWithType) {
-            String entryDate = entry.entryDB.date;
-            if (!entryDate.equals(lastDate)) {
+
+        YearMonth yearMonthObj = YearMonth.of(requireArguments().getInt(ARG_YEAR), requireArguments().getInt(ARG_MONTH));
+        int daysInMonth = yearMonthObj.lengthOfMonth();
+
+        for (int i = 0; i < daysInMonth; i++) {
+            LocalDate day = yearMonthObj.atDay(i+1);
+            result.add(new HeaderItem(displayFormat.format(day), false, false));
+            for (EntryWithType entry: entriesWithType) {
+                String entryDate = entry.entryDB.date;
                 LocalDate date = LocalDate.parse(entryDate, dbFormat);
-                result.add(new HeaderItem(displayFormat.format(date), true, false));
-                lastDate = entryDate;
+                if (displayFormat.format(date).equals(displayFormat.format(day))){
+                    result.add(new EntryItem(entry));
+                };
             }
-            result.add(new EntryItem(entry));
+
         }
 
         return result;
